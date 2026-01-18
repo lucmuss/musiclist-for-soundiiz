@@ -1,9 +1,9 @@
 """Music file metadata extraction."""
 
-import os
 import logging
 from pathlib import Path
-from typing import List, Dict, Optional, Tuple
+from typing import Dict, List, Optional, Tuple
+
 from mutagen import File as MutagenFile
 
 logger = logging.getLogger(__name__)
@@ -14,14 +14,14 @@ class MusicFileExtractor:
 
     # Soundiiz supported audio formats
     SUPPORTED_EXTENSIONS = {
-        ".aac",   # AAC Audio File
-        ".au",    # AU Audio File
+        ".aac",  # AAC Audio File
+        ".au",  # AU Audio File
         ".flac",  # FLAC Audio File
-        ".mp3",   # MP3 Audio File
-        ".ogg",   # OGG Vorbis File
-        ".m4a",   # MPEG-4 Audio
-        ".wav",   # WAV Audio File
-        ".wma",   # Windows Media Audio
+        ".mp3",  # MP3 Audio File
+        ".ogg",  # OGG Vorbis File
+        ".m4a",  # MPEG-4 Audio
+        ".wav",  # WAV Audio File
+        ".wma",  # Windows Media Audio
     }
 
     def __init__(self, include_extensions: Optional[List[str]] = None):
@@ -44,9 +44,7 @@ class MusicFileExtractor:
         else:
             self.extensions = self.SUPPORTED_EXTENSIONS
 
-    def find_music_files(
-        self, directory: str, recursive: bool = True
-    ) -> List[Path]:
+    def find_music_files(self, directory: str, recursive: bool = True) -> List[Path]:
         """
         Find all supported music files in a directory.
 
@@ -78,6 +76,11 @@ class MusicFileExtractor:
                 pattern = "*"
 
             for file_path in dir_path.glob(pattern):
+                # Skip macOS resource fork files and hidden files
+                if file_path.name.startswith('._') or file_path.name.startswith('.'):
+                    logger.debug(f"Skipping hidden/system file: {file_path}")
+                    continue
+                    
                 if file_path.is_file() and file_path.suffix.lower() in self.extensions:
                     music_files.append(file_path)
                     logger.debug(f"Found music file: {file_path}")
@@ -156,7 +159,9 @@ class MusicFileExtractor:
             logger.error(f"Error extracting metadata from {file_path}: {e}")
             raise ValueError(f"Failed to extract metadata: {e}") from e
 
-    def extract_all(self, directory: str, recursive: bool = True) -> List[Dict[str, str]]:
+    def extract_all(
+        self, directory: str, recursive: bool = True
+    ) -> List[Dict[str, str]]:
         """
         Find and extract metadata from all music files in a directory.
 
@@ -178,9 +183,7 @@ class MusicFileExtractor:
                 logger.warning(f"Skipping file {file_path}: {e}")
                 continue
 
-        logger.info(
-            f"Successfully extracted metadata from {len(metadata_list)} files"
-        )
+        logger.info(f"Successfully extracted metadata from {len(metadata_list)} files")
         return metadata_list
 
     @staticmethod

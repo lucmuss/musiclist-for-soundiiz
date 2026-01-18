@@ -5,8 +5,8 @@ __author__ = "Your Name"
 __license__ = "MIT"
 
 from .cli import main
-from .extractor import MusicFileExtractor
 from .exporter import CSVExporter, JSONExporter, M3UExporter
+from .extractor import MusicFileExtractor
 
 __all__ = [
     "main",

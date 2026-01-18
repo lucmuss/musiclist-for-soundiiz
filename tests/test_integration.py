@@ -1,9 +1,11 @@
 """Integration tests using real audio files."""
 
-import pytest
 from pathlib import Path
-from musiclist_for_soundiiz.extractor import MusicFileExtractor
+
+import pytest
+
 from musiclist_for_soundiiz.exporter import CSVExporter, JSONExporter
+from musiclist_for_soundiiz.extractor import MusicFileExtractor
 
 
 class TestRealAudioFiles:
@@ -18,12 +20,12 @@ class TestRealAudioFiles:
         """Test metadata extraction from real MP3 file."""
         extractor = MusicFileExtractor()
         mp3_file = fixtures_dir / "Rock" / "test_file.mp3"
-        
+
         if not mp3_file.exists():
             pytest.skip(f"Test file not found: {mp3_file}")
-        
+
         metadata = extractor.extract_metadata(mp3_file)
-        
+
         # Validate extracted metadata
         assert metadata["title"] == "Loneliness"
         assert metadata["artist"] == "Tomcraft"
@@ -35,12 +37,12 @@ class TestRealAudioFiles:
         """Test metadata extraction from real FLAC file."""
         extractor = MusicFileExtractor()
         flac_file = fixtures_dir / "Rock" / "test_file.flac"
-        
+
         if not flac_file.exists():
             pytest.skip(f"Test file not found: {flac_file}")
-        
+
         metadata = extractor.extract_metadata(flac_file)
-        
+
         # Validate extracted metadata
         assert metadata["title"] == "Loneliness"
         assert metadata["artist"] == "Tomcraft"
@@ -51,12 +53,12 @@ class TestRealAudioFiles:
         """Test metadata extraction from real AAC file."""
         extractor = MusicFileExtractor()
         aac_file = fixtures_dir / "Pop" / "test_file.aac"
-        
+
         if not aac_file.exists():
             pytest.skip(f"Test file not found: {aac_file}")
-        
+
         metadata = extractor.extract_metadata(aac_file)
-        
+
         # Validate extracted metadata
         assert metadata["title"] == "Loneliness"
         assert metadata["artist"] == "Tomcraft"
@@ -67,12 +69,12 @@ class TestRealAudioFiles:
         """Test metadata extraction from real OGG file."""
         extractor = MusicFileExtractor()
         ogg_file = fixtures_dir / "Electronic" / "Techno" / "test_file.ogg"
-        
+
         if not ogg_file.exists():
             pytest.skip(f"Test file not found: {ogg_file}")
-        
+
         metadata = extractor.extract_metadata(ogg_file)
-        
+
         # Validate extracted metadata
         assert metadata["title"] == "Loneliness"
         assert metadata["artist"] == "Tomcraft"
@@ -83,12 +85,12 @@ class TestRealAudioFiles:
         """Test metadata extraction from real WMA file."""
         extractor = MusicFileExtractor()
         wma_file = fixtures_dir / "Electronic" / "test_file.wma"
-        
+
         if not wma_file.exists():
             pytest.skip(f"Test file not found: {wma_file}")
-        
+
         metadata = extractor.extract_metadata(wma_file)
-        
+
         # WMA may not have proper tags, should at least have filename
         assert metadata["filename"] == "test_file.wma"
         assert "title" in metadata
@@ -108,21 +110,21 @@ class TestNestedDirectoryStructure:
         """Test that recursive scan finds files in nested directories."""
         if not fixtures_dir.exists():
             pytest.skip(f"Fixtures directory not found: {fixtures_dir}")
-        
+
         extractor = MusicFileExtractor()
         files = extractor.find_music_files(str(fixtures_dir), recursive=True)
-        
+
         # Should find files in all subdirectories
         assert len(files) > 0
-        
+
         # Check for files in different directories
         file_paths = [str(f) for f in files]
-        
+
         # Verify files from different subdirectories are found
         has_rock = any("Rock" in path for path in file_paths)
         has_pop = any("Pop" in path for path in file_paths)
         has_electronic = any("Electronic" in path for path in file_paths)
-        
+
         # At least one category should have files
         assert has_rock or has_pop or has_electronic
 
@@ -130,10 +132,10 @@ class TestNestedDirectoryStructure:
         """Test that non-recursive scan only finds top-level files."""
         if not fixtures_dir.exists():
             pytest.skip(f"Fixtures directory not found: {fixtures_dir}")
-        
+
         extractor = MusicFileExtractor()
         files = extractor.find_music_files(str(fixtures_dir), recursive=False)
-        
+
         # Should only find files in the top-level directory
         # In our test setup, all files are in subdirectories
         assert len(files) == 0
@@ -142,13 +144,13 @@ class TestNestedDirectoryStructure:
         """Test extracting metadata from all files in nested structure."""
         if not fixtures_dir.exists():
             pytest.skip(f"Fixtures directory not found: {fixtures_dir}")
-        
+
         extractor = MusicFileExtractor()
         metadata_list = extractor.extract_all(str(fixtures_dir), recursive=True)
-        
+
         # Should extract metadata from multiple files
         assert len(metadata_list) > 0
-        
+
         # Verify metadata structure
         for metadata in metadata_list:
             assert "title" in metadata
@@ -161,11 +163,11 @@ class TestNestedDirectoryStructure:
         """Test filtering by extension in nested directory structure."""
         if not fixtures_dir.exists():
             pytest.skip(f"Fixtures directory not found: {fixtures_dir}")
-        
+
         # Only scan for MP3 files
         extractor = MusicFileExtractor(include_extensions=[".mp3"])
         files = extractor.find_music_files(str(fixtures_dir), recursive=True)
-        
+
         # All found files should be MP3
         for file in files:
             assert file.suffix.lower() == ".mp3"
@@ -180,11 +182,12 @@ class TestNestedDirectoryStructure:
         extractor = MusicFileExtractor()
         files = extractor.find_music_files(str(rock_dir), recursive=False)
         
-        # Rock directory should have both MP3 and FLAC
-        extensions = {f.suffix.lower() for f in files}
-        
         # Should have at least one file
         assert len(files) > 0
+        
+        # Rock directory should have both MP3 and FLAC
+        extensions = {f.suffix.lower() for f in files}
+        assert len(extensions) > 0  # At least one format present
 
 
 class TestEndToEndWorkflow:
@@ -199,22 +202,22 @@ class TestEndToEndWorkflow:
         """Test complete workflow: scan → extract → export to CSV."""
         if not fixtures_dir.exists():
             pytest.skip(f"Fixtures directory not found: {fixtures_dir}")
-        
+
         # Extract metadata
         extractor = MusicFileExtractor()
         metadata_list = extractor.extract_all(str(fixtures_dir), recursive=True)
-        
+
         if len(metadata_list) == 0:
             pytest.skip("No music files found in fixtures")
-        
+
         # Export to CSV
         output_file = tmp_path / "test_export.csv"
         exporter = CSVExporter()
         exporter.export(metadata_list, str(output_file))
-        
+
         # Verify CSV file was created
         assert output_file.exists()
-        
+
         # Verify CSV content
         content = output_file.read_text(encoding="utf-8")
         assert "title,artist,album,isrc," in content
@@ -224,27 +227,28 @@ class TestEndToEndWorkflow:
         """Test complete workflow: scan → extract → export to JSON."""
         if not fixtures_dir.exists():
             pytest.skip(f"Fixtures directory not found: {fixtures_dir}")
-        
+
         # Extract metadata
         extractor = MusicFileExtractor()
         metadata_list = extractor.extract_all(str(fixtures_dir), recursive=True)
-        
+
         if len(metadata_list) == 0:
             pytest.skip("No music files found in fixtures")
-        
+
         # Export to JSON
         output_file = tmp_path / "test_export.json"
         exporter = JSONExporter()
         exporter.export(metadata_list, str(output_file))
-        
+
         # Verify JSON file was created
         assert output_file.exists()
-        
+
         # Verify JSON is valid
         import json
+
         with open(output_file, "r", encoding="utf-8") as f:
             data = json.load(f)
-        
+
         assert "total_songs" in data
         assert "songs" in data
         assert data["total_songs"] == len(metadata_list)
@@ -253,13 +257,13 @@ class TestEndToEndWorkflow:
         """Test that same song in different formats has consistent metadata."""
         if not fixtures_dir.exists():
             pytest.skip(f"Fixtures directory not found: {fixtures_dir}")
-        
+
         extractor = MusicFileExtractor()
         metadata_list = extractor.extract_all(str(fixtures_dir), recursive=True)
-        
+
         if len(metadata_list) < 2:
             pytest.skip("Not enough files to compare")
-        
+
         # Group by title and artist
         songs = {}
         for metadata in metadata_list:
@@ -267,7 +271,7 @@ class TestEndToEndWorkflow:
             if key not in songs:
                 songs[key] = []
             songs[key].append(metadata)
-        
+
         # Check that same song has consistent metadata across formats
         for (title, artist), versions in songs.items():
             if len(versions) > 1:

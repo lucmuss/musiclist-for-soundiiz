@@ -1,15 +1,13 @@
 """Tests for metadata exporters."""
 
-import pytest
 import json
 from pathlib import Path
-from musiclist_for_soundiiz.exporter import (
-    CSVExporter,
-    JSONExporter,
-    M3UExporter,
-    TXTExporter,
-    get_exporter,
-)
+
+import pytest
+
+from musiclist_for_soundiiz.exporter import (CSVExporter, JSONExporter,
+                                             M3UExporter, TXTExporter,
+                                             get_exporter)
 
 
 @pytest.fixture
@@ -48,15 +46,15 @@ class TestCSVExporter:
         """Test basic CSV export."""
         exporter = CSVExporter()
         output_file = tmp_path / "output.csv"
-        
+
         exporter.export(sample_metadata, str(output_file))
-        
+
         assert output_file.exists()
         content = output_file.read_text(encoding="utf-8")
-        
+
         # Check header
         assert content.startswith("title,artist,album,isrc,\n")
-        
+
         # Check that songs are present
         assert "Song 1" in content
         assert "Artist 1" in content
@@ -65,11 +63,11 @@ class TestCSVExporter:
         """Test CSV export with special characters."""
         exporter = CSVExporter()
         output_file = tmp_path / "output.csv"
-        
+
         exporter.export(sample_metadata, str(output_file))
-        
+
         content = output_file.read_text(encoding="utf-8")
-        
+
         # Check proper escaping
         assert '"Song, with comma"' in content
         assert '"Artist ""with"" quotes"' in content
@@ -78,9 +76,9 @@ class TestCSVExporter:
         """Test CSV export to single file."""
         exporter = CSVExporter(max_songs_per_file=500)
         output_file = tmp_path / "output.csv"
-        
+
         exporter.export(sample_metadata, str(output_file))
-        
+
         # Should create only one file
         csv_files = list(tmp_path.glob("*.csv"))
         assert len(csv_files) == 1
@@ -97,16 +95,16 @@ class TestCSVExporter:
             }
             for i in range(5)
         ]
-        
+
         exporter = CSVExporter(max_songs_per_file=2)
         output_file = tmp_path / "output.csv"
-        
+
         exporter.export(metadata, str(output_file))
-        
+
         # Should create 3 files (2+2+1)
         csv_files = sorted(tmp_path.glob("output_*.csv"))
         assert len(csv_files) == 3
-        
+
         # Check filenames
         assert (tmp_path / "output_1.csv").exists()
         assert (tmp_path / "output_2.csv").exists()
@@ -116,25 +114,25 @@ class TestCSVExporter:
         """Test CSV export with empty metadata list."""
         exporter = CSVExporter()
         output_file = tmp_path / "output.csv"
-        
+
         exporter.export([], str(output_file))
-        
+
         # Should log warning
         assert "No metadata to export" in caplog.text
-        
+
         # Should not create file
         assert not output_file.exists()
 
     def test_csv_escape_method(self):
         """Test CSV escaping method."""
         exporter = CSVExporter()
-        
+
         # No special characters - no escaping
         assert exporter._escape_csv("Simple text") == "Simple text"
-        
+
         # With comma - wrap in quotes
         assert exporter._escape_csv("Text, with comma") == '"Text, with comma"'
-        
+
         # With quotes - double them and wrap
         assert exporter._escape_csv('Text "with" quotes') == '"Text ""with"" quotes"'
 
@@ -143,9 +141,9 @@ class TestCSVExporter:
         exporter = CSVExporter()
         output_file = tmp_path / "subdir" / "output.csv"
         metadata = [{"title": "Test", "artist": "Test", "album": "Test", "isrc": ""}]
-        
+
         exporter.export(metadata, str(output_file))
-        
+
         assert output_file.exists()
 
 
@@ -156,14 +154,14 @@ class TestJSONExporter:
         """Test basic JSON export."""
         exporter = JSONExporter()
         output_file = tmp_path / "output.json"
-        
+
         exporter.export(sample_metadata, str(output_file))
-        
+
         assert output_file.exists()
-        
+
         with open(output_file, "r", encoding="utf-8") as f:
             data = json.load(f)
-        
+
         assert "total_songs" in data
         assert data["total_songs"] == 2
         assert "songs" in data
@@ -173,11 +171,11 @@ class TestJSONExporter:
         """Test JSON export with pretty formatting."""
         exporter = JSONExporter(pretty=True)
         output_file = tmp_path / "output.json"
-        
+
         exporter.export(sample_metadata, str(output_file))
-        
+
         content = output_file.read_text(encoding="utf-8")
-        
+
         # Pretty format should have indentation
         assert "  " in content
 
@@ -185,11 +183,11 @@ class TestJSONExporter:
         """Test JSON export without pretty formatting."""
         exporter = JSONExporter(pretty=False)
         output_file = tmp_path / "output.json"
-        
+
         exporter.export(sample_metadata, str(output_file))
-        
+
         content = output_file.read_text(encoding="utf-8")
-        
+
         # Compact format should not have much whitespace
         # Just check it's valid JSON
         data = json.loads(content)
@@ -199,9 +197,9 @@ class TestJSONExporter:
         """Test JSON export with empty metadata list."""
         exporter = JSONExporter()
         output_file = tmp_path / "output.json"
-        
+
         exporter.export([], str(output_file))
-        
+
         assert "No metadata to export" in caplog.text
         assert not output_file.exists()
 
@@ -215,15 +213,15 @@ class TestJSONExporter:
                 "isrc": "",
             }
         ]
-        
+
         exporter = JSONExporter()
         output_file = tmp_path / "output.json"
-        
+
         exporter.export(metadata, str(output_file))
-        
+
         with open(output_file, "r", encoding="utf-8") as f:
             data = json.load(f)
-        
+
         assert data["songs"][0]["title"] == "Über den Wolken"
 
 
@@ -234,15 +232,15 @@ class TestM3UExporter:
         """Test M3U export with extended format."""
         exporter = M3UExporter(extended=True)
         output_file = tmp_path / "playlist.m3u"
-        
+
         exporter.export(sample_metadata, str(output_file))
-        
+
         assert output_file.exists()
         content = output_file.read_text(encoding="utf-8")
-        
+
         # Check extended M3U header
         assert content.startswith("#EXTM3U\n")
-        
+
         # Check EXTINF lines
         assert "#EXTINF:180,Artist 1 - Song 1" in content
         assert "/path/to/song1.mp3" in content
@@ -251,14 +249,14 @@ class TestM3UExporter:
         """Test M3U export without extended format."""
         exporter = M3UExporter(extended=False)
         output_file = tmp_path / "playlist.m3u"
-        
+
         exporter.export(sample_metadata, str(output_file))
-        
+
         content = output_file.read_text(encoding="utf-8")
-        
+
         # Should not have extended header
         assert not content.startswith("#EXTM3U")
-        
+
         # Should have file paths
         assert "/path/to/song1.mp3" in content
         assert "/path/to/song2.mp3" in content
@@ -267,9 +265,9 @@ class TestM3UExporter:
         """Test M3U export with empty metadata list."""
         exporter = M3UExporter()
         output_file = tmp_path / "playlist.m3u"
-        
+
         exporter.export([], str(output_file))
-        
+
         assert "No metadata to export" in caplog.text
         assert not output_file.exists()
 
@@ -281,12 +279,12 @@ class TestTXTExporter:
         """Test basic TXT export."""
         exporter = TXTExporter()
         output_file = tmp_path / "output.txt"
-        
+
         exporter.export(sample_metadata, str(output_file))
-        
+
         assert output_file.exists()
         content = output_file.read_text(encoding="utf-8")
-        
+
         # Check format: Title - Artist
         assert "Song 1 - Artist 1\n" in content
         assert 'Song, with comma - Artist "with" quotes\n' in content
@@ -295,9 +293,9 @@ class TestTXTExporter:
         """Test TXT export with empty metadata list."""
         exporter = TXTExporter()
         output_file = tmp_path / "output.txt"
-        
+
         exporter.export([], str(output_file))
-        
+
         assert "No metadata to export" in caplog.text
         assert not output_file.exists()
 
@@ -340,5 +338,5 @@ class TestGetExporter:
         """Test getting exporter with invalid format."""
         with pytest.raises(ValueError) as exc_info:
             get_exporter("invalid")
-        
+
         assert "Unsupported format" in str(exc_info.value)

@@ -5,148 +5,183 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
-Professionelles Kommandozeilen-Tool zum Extrahieren von Musikdatei-Metadaten für den Import in Soundiiz.
+Professional command-line tool for extracting music file metadata for Soundiiz import.
 
 ## ✨ Features
 
-- **🎵 Multi-Format-Unterstützung** - AAC, AU, FLAC, MP3, OGG, M4A, WAV, WMA
-- **📊 Mehrere Export-Formate** - CSV (Soundiiz), JSON, M3U, TXT
-- **🔍 Intelligente Metadaten-Extraktion** - Liest Tags und parst Dateinamen (Format: "Artist - Title")
-- **📁 Rekursives Scannen** - Durchsucht automatisch alle Unterverzeichnisse
-- **🔄 Automatische CSV-Aufteilung** - Teilt große Playlists in mehrere Dateien (konfigurierbar)
-- **🛡️ Robuste Fehlerbehandlung** - Überspringt problematische Dateien und setzt den Prozess fort
-- **✅ Production-Ready** - Vollständig getestet mit umfangreicher Test-Suite
-- **🌐 Unicode-Support** - Korrekte Behandlung von Umlauten und Sonderzeichen
-- **📝 Detailliertes Logging** - Verbose-Modus für Debugging
+- **🎵 Multi-Format Support** - AAC, AU, FLAC, MP3, OGG, M4A, WAV, WMA
+- **📊 Multiple Export Formats** - CSV (Soundiiz), JSON, M3U, TXT
+- **🔍 Intelligent Metadata Extraction** - Reads tags and parses filenames (format: "Artist - Title")
+- **📁 Recursive Scanning** - Automatically searches all subdirectories
+- **🔄 Automatic File Splitting** - Splits large playlists into multiple files (configurable)
+- **🔎 Duplicate Detection** - Automatically finds and removes duplicate songs
+- **📦 Batch Processing** - Process multiple directories simultaneously
+- **🛡️ Robust Error Handling** - Skips problematic files and continues processing
+- **✅ Production-Ready** - Fully tested with comprehensive test suite
+- **🌐 Unicode Support** - Correct handling of special characters
+- **📝 Detailed Logging** - Verbose mode for debugging
 
-## 📋 Inhaltsverzeichnis
+## 📋 Table of Contents
 
 - [Installation](#installation)
-- [Schnellstart](#schnellstart)
-- [Verwendungsbeispiele](#verwendungsbeispiele)
-- [Konfiguration](#konfiguration)
-- [Export-Formate](#export-formate)
+- [Quick Start](#quick-start)
+- [Usage Examples](#usage-examples)
+- [Configuration](#configuration)
+- [Export Formats](#export-formats)
 - [Soundiiz Import](#soundiiz-import)
-- [Entwicklung](#entwicklung)
-- [Tests](#tests)
-- [Beitragen](#beitragen)
-- [Lizenz](#lizenz)
+- [Development](#development)
+- [Testing](#testing)
+- [Contributing](#contributing)
+- [License](#license)
 
 ## 🚀 Installation
 
-### Voraussetzungen
+### Prerequisites
 
-- Python 3.8 oder höher
+- Python 3.8 or higher
 
-### Installation
+### Install
 
 ```bash
-# Repository klonen
+# Clone the repository
 git clone https://github.com/lucmuss/musiclist-for-soundiiz.git
 cd musiclist-for-soundiiz
 
-# Virtuelle Umgebung erstellen (empfohlen)
-python -m venv venv
-source venv/bin/activate  # Unter Windows: venv\Scripts\activate
+# Create virtual environment (recommended)
+python3 -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
 
-# Paket installieren
+# Install package
 pip install -e .
 
-# Oder mit Entwicklungsabhängigkeiten
+# Or with development dependencies
 pip install -e ".[dev]"
 ```
 
-## ⚡ Schnellstart
+## ⚡ Quick Start
 
 ```bash
-# Musikdateien scannen und als CSV exportieren
-musiclist-for-soundiiz -i /pfad/zu/musik -o output.csv
+# Scan music files and export as CSV
+musiclist-for-soundiiz -i /path/to/music -o output.csv
 
-# Ergebnis: output.csv (bereit für Soundiiz Import)
+# Result: output.csv (ready for Soundiiz import)
 ```
 
-## 📚 Verwendungsbeispiele
+## 📚 Usage Examples
 
-### 🎯 Basis-Verwendung
+### 🎯 Basic Usage
 
 ```bash
-# Verzeichnis scannen und CSV erstellen
+# Scan directory and create CSV
 musiclist-for-soundiiz -i /music/library -o soundiiz.csv
 ```
 
-### 📝 Verschiedene Export-Formate
+### 📝 Different Export Formats
 
 ```bash
-# CSV-Export (Standard, für Soundiiz)
+# CSV export (default, for Soundiiz)
 musiclist-for-soundiiz -i /music -o playlist.csv -f csv
 
-# JSON-Export (mit allen Metadaten)
+# JSON export (with all metadata)
 musiclist-for-soundiiz -i /music -o playlist.json -f json
 
-# M3U-Playlist erstellen
+# Create M3U playlist
 musiclist-for-soundiiz -i /music -o playlist.m3u -f m3u
 
-# Einfache Textliste (Titel - Artist)
+# Simple text list (Title - Artist)
 musiclist-for-soundiiz -i /music -o playlist.txt -f txt
 ```
 
-### 🎨 Nur bestimmte Dateiformate
+### 🎨 Filter by File Type
 
 ```bash
-# Nur MP3 und FLAC Dateien
+# Only MP3 and FLAC files
 musiclist-for-soundiiz -i /music -e .mp3 .flac -o output.csv
 
-# Nur OGG Dateien
+# Only OGG files
 musiclist-for-soundiiz -i /music -e .ogg -o ogg_files.csv
 ```
 
-### 📁 Nicht-rekursives Scannen
+### 📁 Non-Recursive Scanning
 
 ```bash
-# Nur aktuelles Verzeichnis (keine Unterordner)
+# Only current directory (no subdirectories)
 musiclist-for-soundiiz -i /music --no-recursive -o output.csv
 ```
 
-### 🔧 CSV-Optionen anpassen
+### 🔧 Customize File Splitting
 
 ```bash
-# Maximale Anzahl Songs pro CSV-Datei
+# Maximum songs per file
 musiclist-for-soundiiz -i /music -o output.csv --max-songs-per-file 200
 
-# Bei mehr als 200 Songs werden mehrere Dateien erstellt:
+# For more than 200 songs, multiple files are created:
 # output_1.csv, output_2.csv, output_3.csv, ...
 ```
 
-### 🔍 Verbose-Modus (Debugging)
+### 🔍 Verbose Mode (Debugging)
 
 ```bash
-# Detaillierte Ausgabe für Debugging
+# Detailed output for debugging
 musiclist-for-soundiiz -i /music -o output.csv -v
 
-# Oder komplett still (nur Fehler)
+# Or completely silent (errors only)
 musiclist-for-soundiiz -i /music -o output.csv -q
 ```
 
-## ⚙️ Konfiguration
+### 📦 Batch Processing (Multiple Directories)
 
-### Kommandozeilen-Optionen
+```bash
+# Process multiple directories simultaneously
+musiclist-for-soundiiz -i /music/rock /music/pop /music/jazz -o all_music.csv
 
-| Option | Beschreibung | Standard |
-|--------|--------------|----------|
-| `-i, --input` | Pfad zum Musik-Verzeichnis | **Erforderlich** |
-| `-o, --output` | Pfad zur Ausgabedatei | `output.csv` |
-| `-f, --format` | Export-Format (csv/json/m3u/txt) | `csv` |
-| `-e, --extensions` | Dateierweiterungen zum Filtern | Alle unterstützten |
-| `--no-recursive` | Keine Unterverzeichnisse scannen | `false` |
-| `--max-songs-per-file` | Max. Songs pro CSV-Datei | `500` |
-| `--no-pretty-json` | Kompaktes JSON (ohne Einrückung) | `false` |
-| `-v, --verbose` | Verbose-Logging aktivieren | `false` |
-| `-q, --quiet` | Nur Fehler ausgeben | `false` |
-| `--version` | Version anzeigen | - |
+# Combine music from different sources
+musiclist-for-soundiiz -i /external_hdd/music /nas/music /downloads/music -o combined.csv
+```
 
-## 📄 Export-Formate
+### 🔎 Duplicate Detection
 
-### CSV (Soundiiz-kompatibel)
+```bash
+# Detect duplicates and create report
+musiclist-for-soundiiz -i /music --detect-duplicates -o output.csv
+
+# Detect duplicates and save to file
+musiclist-for-soundiiz -i /music --detect-duplicates --duplicate-report duplicates.txt -o output.csv
+
+# Automatically remove duplicates (keep first copy)
+musiclist-for-soundiiz -i /music --remove-duplicates -o output.csv
+
+# Remove duplicates (keep last copy)
+musiclist-for-soundiiz -i /music --remove-duplicates --duplicate-strategy keep_last -o output.csv
+
+# Remove duplicates (keep shortest path)
+musiclist-for-soundiiz -i /music --remove-duplicates --duplicate-strategy keep_shortest_path -o output.csv
+```
+
+## ⚙️ Configuration
+
+### Command-Line Options
+
+| Option | Description | Default |
+|--------|-------------|---------|
+| `-i, --input` | Path(s) to music director(y/ies) | **Required** |
+| `-o, --output` | Output file path | `output.csv` |
+| `-f, --format` | Export format (csv/json/m3u/txt) | `csv` |
+| `-e, --extensions` | File extensions to filter | All supported |
+| `--no-recursive` | Don't scan subdirectories | `false` |
+| `--max-songs-per-file` | Max songs per file | `200` |
+| `--no-pretty-json` | Compact JSON (no indentation) | `false` |
+| `--detect-duplicates` | Detect and display duplicates | `false` |
+| `--remove-duplicates` | Remove duplicates from export | `false` |
+| `--duplicate-strategy` | Strategy (keep_first/keep_last/keep_shortest_path) | `keep_first` |
+| `--duplicate-report` | Save duplicate report to file | - |
+| `-v, --verbose` | Enable verbose logging | `false` |
+| `-q, --quiet` | Only show errors | `false` |
+| `--version` | Show version | - |
+
+## 📄 Export Formats
+
+### CSV (Soundiiz-compatible)
 
 ```csv
 title,artist,album,isrc,
@@ -154,7 +189,7 @@ Song Title,Artist Name,Album Name,,
 Another Song,"Artist, with comma",Album 2,,
 ```
 
-**Hinweis:** Das abschließende Komma ist Teil der Soundiiz-Spezifikation.
+**Note:** The trailing comma is part of the Soundiiz specification.
 
 ### JSON
 
@@ -185,7 +220,7 @@ Another Song,"Artist, with comma",Album 2,,
 /path/to/song.mp3
 ```
 
-### TXT (Einfache Liste)
+### TXT (Simple List)
 
 ```
 Song Title - Artist Name
@@ -194,27 +229,27 @@ Another Song - Another Artist
 
 ## 🎵 Soundiiz Import
 
-### Schritt-für-Schritt Anleitung
+### Step-by-Step Guide
 
-1. **CSV-Datei erstellen:**
+1. **Create CSV file:**
    ```bash
-   musiclist-for-soundiiz -i /pfad/zu/musik -o meine_musik.csv
+   musiclist-for-soundiiz -i /path/to/music -o my_music.csv
    ```
 
-2. **Zu Soundiiz gehen:**
-   - Öffne [soundiiz.com](https://soundiiz.com)
-   - Melde dich an
+2. **Go to Soundiiz:**
+   - Open [soundiiz.com](https://soundiiz.com)
+   - Sign in
 
-3. **Import starten:**
-   - Klicke auf "Import"
-   - Wähle "CSV File"
-   - Lade deine `meine_musik.csv` hoch
+3. **Start Import:**
+   - Click "Import"
+   - Select "CSV File"
+   - Upload your `my_music.csv`
 
-4. **Zu Streaming-Dienst exportieren:**
-   - Wähle Ziel-Plattform (Spotify, Apple Music, etc.)
-   - Bestätige den Export
+4. **Export to Streaming Service:**
+   - Select target platform (Spotify, Apple Music, etc.)
+   - Confirm export
 
-### Unterstützte Audio-Formate
+### Supported Audio Formats
 
 ✅ **AAC** (.aac) - Advanced Audio Coding  
 ✅ **AU** (.au) - AU Audio File  
@@ -225,115 +260,122 @@ Another Song - Another Artist
 ✅ **WAV** (.wav) - Waveform Audio File  
 ✅ **WMA** (.wma) - Windows Media Audio  
 
-## 💻 Entwicklung
+## 💻 Development
 
-### Entwicklungsumgebung einrichten
+### Setup Development Environment
 
 ```bash
-# Repository klonen
+# Clone repository
 git clone https://github.com/lucmuss/musiclist-for-soundiiz.git
 cd musiclist-for-soundiiz
 
-# Virtuelle Umgebung erstellen
-python -m venv venv
+# Create virtual environment
+python3 -m venv venv
 source venv/bin/activate
 
-# Development-Abhängigkeiten installieren
+# Install development dependencies
 pip install -e ".[dev]"
 ```
 
-### Code-Qualität
+### Code Quality
 
 ```bash
-# Code formatieren
+# Format code
 black src tests
 
-# Imports sortieren
+# Sort imports
 isort src tests
 
 # Linting
 flake8 src tests --max-line-length=100
 
-# Type-Checking
+# Type checking
 mypy src
 ```
 
-## 🧪 Tests
+## 🧪 Testing
 
-### Tests ausführen
+### Run Tests
 
 ```bash
-# Alle Tests ausführen
+# Run all tests
 pytest
 
-# Mit Coverage-Report
+# With coverage report
 pytest --cov=musiclist_for_soundiiz --cov-report=html
 
-# Spezifische Test-Datei
+# Specific test file
 pytest tests/test_extractor.py
 
-# Verbose-Modus
+# Verbose mode
 pytest -v
 ```
 
-### Test-Coverage
+### Test Coverage
 
-Das Projekt hat eine umfassende Test-Suite:
+The project has a comprehensive test suite:
 
-- ✅ Unit-Tests für alle Formate (AAC, AU, FLAC, MP3, OGG)
-- ✅ Tests für alle Export-Formate (CSV, JSON, M3U, TXT)
-- ✅ Tests für Fehlerbehandlung
-- ✅ Tests für Edge-Cases (Sonderzeichen, Unicode, etc.)
-- ✅ Tests für rekursives/nicht-rekursives Scannen
+- ✅ Unit tests for all formats (AAC, AU, FLAC, MP3, OGG)
+- ✅ Tests for all export formats (CSV, JSON, M3U, TXT)
+- ✅ Tests for error handling
+- ✅ Tests for edge cases (special characters, Unicode, etc.)
+- ✅ Tests for recursive/non-recursive scanning
+- ✅ Tests for duplicate detection
+- ✅ Tests for batch processing
 
-## 📊 Projekt-Struktur
+## 📊 Project Structure
 
 ```
 musiclist-for-soundiiz/
 ├── src/
 │   └── musiclist_for_soundiiz/
 │       ├── __init__.py
-│       ├── cli.py           # Kommandozeilen-Interface
-│       ├── extractor.py     # Metadaten-Extraktion
-│       └── exporter.py      # Export-Funktionalität
+│       ├── cli.py                 # Command-line interface
+│       ├── extractor.py           # Metadata extraction
+│       ├── exporter.py            # Export functionality
+│       └── duplicate_detector.py  # Duplicate detection
 ├── tests/
 │   ├── __init__.py
-│   ├── test_extractor.py    # Extractor-Tests
-│   └── test_exporter.py     # Exporter-Tests
+│   ├── test_extractor.py          # Extractor tests
+│   ├── test_exporter.py           # Exporter tests
+│   ├── test_duplicate_detector.py # Duplicate detection tests
+│   ├── test_cli.py                # CLI tests
+│   └── test_integration.py        # Integration tests
 ├── .github/
 │   └── workflows/
-│       └── ci.yml           # GitHub Actions CI/CD
-├── setup.py                 # Paket-Konfiguration
-├── requirements.txt         # Dependencies
-├── requirements-dev.txt     # Dev-Dependencies
+│       └── ci.yml                 # GitHub Actions CI/CD
+├── setup.py                       # Package configuration
+├── requirements.txt               # Dependencies
+├── requirements-dev.txt           # Dev dependencies
+├── mypy.ini                       # MyPy configuration
 ├── .gitignore
 ├── LICENSE
 ├── CONTRIBUTING.md
 └── README.md
 ```
 
-## 🤝 Beitragen
+## 🤝 Contributing
 
-Beiträge sind willkommen! Siehe [CONTRIBUTING.md](CONTRIBUTING.md) für Details.
+Contributions are welcome! See [CONTRIBUTING.md](CONTRIBUTING.md) for details.
 
-### Schnelle Schritte
+### Quick Steps
 
-1. Fork das Repository
-2. Erstelle einen Feature-Branch (`git checkout -b feature/amazing-feature`)
-3. Mache deine Änderungen
-4. Füge Tests hinzu
-5. Führe Tests aus (`pytest`)
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Make your changes
+4. Add tests
+5. Run tests (`pytest`)
 6. Commit (`git commit -m 'feat: add amazing feature'`)
 7. Push (`git push origin feature/amazing-feature`)
-8. Erstelle einen Pull Request
+8. Create a Pull Request
 
-## 📝 Lizenz
+## 📝 License
 
-Dieses Projekt ist unter der MIT-Lizenz lizenziert - siehe [LICENSE](LICENSE) für Details.
+This project is licensed under the MIT License - see [LICENSE](LICENSE) for details.
 
-## 🙏 Danksagungen
+## 🙏 Acknowledgments
 
-Erstellt mit:
+Created with:
 - [Mutagen](https://github.com/quodlibet/mutagen) - Python Audio Metadata Library
 - [pytest](https://pytest.org/) - Testing Framework
 
@@ -341,47 +383,73 @@ Erstellt mit:
 
 - **Issues:** [GitHub Issues](https://github.com/lucmuss/musiclist-for-soundiiz/issues)
 - **Discussions:** [GitHub Discussions](https://github.com/lucmuss/musiclist-for-soundiiz/discussions)
-- **Dokumentation:** [README](https://github.com/lucmuss/musiclist-for-soundiiz#readme)
+- **Documentation:** [README](https://github.com/lucmuss/musiclist-for-soundiiz#readme)
 
 ## 🗺️ Roadmap
 
-- [ ] GUI-Interface (tkinter/PyQt)
-- [ ] Automatische Duplikat-Erkennung
-- [ ] Batch-Verarbeitung mehrerer Verzeichnisse
-- [ ] Spotify/Apple Music Direktintegration
+- [ ] GUI Interface (tkinter/PyQt)
+- [ ] Direct Spotify/Apple Music integration
 - [ ] Docker Container
-- [ ] Web-Interface
+- [ ] Web Interface
+- [ ] Intelligent genre detection
+- [ ] Playlist analysis and statistics
 
-## 💡 Beispiele
+## 💡 Examples
 
-### Große Musikbibliothek verarbeiten
+### Process Large Music Library
 
 ```bash
-# 10.000+ Songs scannen und in mehrere CSV-Dateien aufteilen
-musiclist-for-soundiiz -i /große/bibliothek -o playlist.csv --max-songs-per-file 500
-# Erstellt: playlist_1.csv, playlist_2.csv, playlist_3.csv, ...
+# Scan 10,000+ songs and split into multiple CSV files
+musiclist-for-soundiiz -i /large/library -o playlist.csv --max-songs-per-file 500
+# Creates: playlist_1.csv, playlist_2.csv, playlist_3.csv, ...
 ```
 
-### Nur verlustfreie Formate
+### Lossless Formats Only
 
 ```bash
-# Nur FLAC und WAV
+# Only FLAC and WAV
 musiclist-for-soundiiz -i /music -e .flac .wav -o lossless.csv
 ```
 
-### Komplett-Export (alle Formate)
+### Complete Export (All Formats)
 
 ```bash
-# CSV für Soundiiz
+# CSV for Soundiiz
 musiclist-for-soundiiz -i /music -o soundiiz.csv -f csv
 
-# JSON für Backup/Analyse
+# JSON for backup/analysis
 musiclist-for-soundiiz -i /music -o backup.json -f json
 
-# M3U für Media Player
+# M3U for media player
 musiclist-for-soundiiz -i /music -o playlist.m3u -f m3u
+```
+
+### Find Duplicates in Large Library
+
+```bash
+# Find duplicates and create detailed report
+musiclist-for-soundiiz -i /large/library \
+  --detect-duplicates \
+  --duplicate-report dups.txt \
+  -o clean.csv
+
+# Automatically remove duplicates and export clean list
+musiclist-for-soundiiz -i /large/library \
+  --remove-duplicates \
+  --duplicate-strategy keep_shortest_path \
+  -o clean_playlist.csv
+```
+
+### Combine Multiple Music Sources
+
+```bash
+# Combine music from multiple hard drives/folders
+musiclist-for-soundiiz \
+  -i /mnt/hdd1/music /mnt/hdd2/music /home/user/Downloads/music \
+  --remove-duplicates \
+  -o combined.csv
 ```
 
 ---
 
-**Entwickelt mit ❤️ für die Musik-Community**
+**Developed with ❤️ for the music community**
