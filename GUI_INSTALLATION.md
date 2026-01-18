@@ -2,11 +2,11 @@
 
 ## Problem: ModuleNotFoundError: No module named 'tkinter'
 
-Tkinter ist normalerweise nicht in virtuellen Python-Umgebungen enthalten. Hier ist die Lösung:
+Tkinter is usually not included in Python virtual environments. Here's the solution:
 
 ---
 
-## ✅ Lösung: Tkinter System-Wide installieren
+## ✅ Solution: Install Tkinter System-Wide
 
 ### Ubuntu/Debian:
 ```bash
@@ -21,80 +21,80 @@ sudo dnf install python3-tkinter
 
 ### macOS:
 ```bash
-# Tkinter ist normalerweise mit Python vorinstalliert
-# Falls nicht:
+# Tkinter is usually pre-installed with Python
+# If not:
 brew install python-tk
 ```
 
 ### Windows:
-Tkinter ist standardmäßig mit Python installiert. Keine zusätzlichen Schritte nötig.
+Tkinter is installed by default with Python. No additional steps needed.
 
 ---
 
-## 🧪 Testen ob Tkinter installiert ist:
+## 🧪 Test if Tkinter is Installed:
 
 ```bash
 python3 -m tkinter
 ```
 
-✅ **Erfolgreich**: Ein kleines Testfenster sollte erscheinen  
-❌ **Fehler**: Tkinter ist nicht installiert
+✅ **Success**: A small test window should appear  
+❌ **Error**: Tkinter is not installed
 
 ---
 
-## 🚀 Nach der Installation:
+## 🚀 After Installation:
 
 ```bash
-# Wechsel in dein Projektverzeichnis
+# Navigate to your project directory
 cd /home/skymuss/projects/musiclist-for-soundiiz
 
-# Aktiviere virtuelle Umgebung
+# Activate virtual environment
 source venv/bin/activate
 
-# Starte die GUI
+# Start the GUI
 musiclist-for-soundiiz-gui
 ```
 
 ---
 
-## 🔧 Alternative: GUI ohne Installation starten
+## 🔧 Alternative: Start GUI Without Installation
 
-Falls du Tkinter nicht installieren kannst, starte die GUI direkt aus dem System-Python:
+If you cannot install Tkinter, start the GUI directly from system Python:
 
 ```bash
-# OHNE virtuelle Umgebung
+# WITHOUT virtual environment
 cd /home/skymuss/projects/musiclist-for-soundiiz
 
-# Installiere nur Mutagen system-wide
+# Install only Mutagen system-wide
 pip3 install mutagen --user
 
-# Starte GUI direkt
+# Start GUI directly
 python3 src/musiclist_for_soundiiz/gui.py
 ```
 
-**Hinweis**: Dies funktioniert, weil Tkinter system-wide verfügbar ist, auch wenn es nicht in der venv ist.
+**Note**: This works because Tkinter is available system-wide, even if it's not in the venv.
 
 ---
 
-## 📝 Warum passiert das?
+## 📝 Why Does This Happen?
 
-- Tkinter ist eine C-Extension
-- Virtual Environments kopieren es nicht automatisch
-- Muss system-wide installiert werden
-- Aber: Funktioniert dann in allen venvs
+- Tkinter is a C-extension
+- Virtual environments don't copy it automatically
+- Must be installed system-wide
+- But: Works in all venvs once installed
 
 ---
 
-## ✅ Schnelle Schritt-für-Schritt-Lösung
+## ✅ Quick Step-by-Step Solution
 
 ```bash
-# 1. Tkinter installieren (erfordert sudo/Admin)
+# 1. Install Tkinter (requires sudo/admin)
 sudo apt-get install python3-tk
 
-# 2. Testen
+# 2. Test
 python3 -m tkinter
 
-# 3. GUI starten
+# 3. Start GUI
 cd /home/skymuss/projects/musiclist-for-soundiiz
 source venv/bin/activate
 musiclist-for-soundiiz-gui
@@ -102,21 +102,21 @@ musiclist-for-soundiiz-gui
 
 ---
 
-## 🆘 Immer noch Probleme?
+## 🆘 Still Having Issues?
 
 ### Check 1: Python Version
 ```bash
 python3 --version
-# GUI benötigt Python 3.8+
+# GUI requires Python 3.8+
 ```
 
 ### Check 2: Tkinter Version
 ```bash
 python3 -c "import tkinter; print(tkinter.TkVersion)"
-# Sollte 8.6 oder höher sein
+# Should be 8.6 or higher
 ```
 
-### Check 3: Pfade
+### Check 3: Paths
 ```bash
 which python3
 which musiclist-for-soundiiz-gui
@@ -124,9 +124,9 @@ which musiclist-for-soundiiz-gui
 
 ---
 
-## 💡 Tipp: In Dokumentation aufnehmen
+## 💡 Tip: Include in Documentation
 
-Füge dies zu deinem README hinzu, unter "Prerequisites":
+Add this to your README under "Prerequisites":
 
 ```markdown
 ## Prerequisites
@@ -140,4 +140,4 @@ Füge dies zu deinem README hinzu, unter "Prerequisites":
 
 ---
 
-**Problem gelöst? Starte die GUI und viel Spaß! 🎉**
+**Problem solved? Start the GUI and have fun! 🎉**

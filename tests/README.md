@@ -1,18 +1,18 @@
-# Test-Dokumentation
+# Test Documentation
 
-Diese Test-Suite stellt sicher, dass MusicList for Soundiiz korrekt funktioniert.
+This test suite ensures that MusicList for Soundiiz functions correctly.
 
-## Test-Struktur
+## Test Structure
 
 ```
 tests/
 ├── __init__.py
-├── README.md                    # Diese Datei
-├── test_extractor.py           # Unit-Tests für Metadaten-Extraktion
-├── test_exporter.py            # Unit-Tests für Export-Funktionen
-├── test_integration.py         # Integration-Tests mit echten Audiodateien
-└── fixtures/                   # Test-Fixtures
-    └── music/                  # Verschachtelte Verzeichnisstruktur
+├── README.md                    # This file
+├── test_extractor.py           # Unit tests for metadata extraction
+├── test_exporter.py            # Unit tests for export functions
+├── test_integration.py         # Integration tests with real audio files
+└── fixtures/                   # Test fixtures
+    └── music/                  # Nested directory structure
         ├── Rock/
         │   ├── test_file.mp3
         │   └── test_file.flac
@@ -24,52 +24,52 @@ tests/
                 └── test_file.ogg
 ```
 
-## Test-Kategorien
+## Test Categories
 
-### 1. Unit-Tests (test_extractor.py)
+### 1. Unit Tests (test_extractor.py)
 
-**Testet:** Metadaten-Extraktion und Datei-Scanning
+**Tests:** Metadata extraction and file scanning
 
-- ✅ Unterstützung aller Audio-Formate (AAC, AU, FLAC, MP3, OGG, M4A, WAV, WMA)
-- ✅ Rekursives/nicht-rekursives Scannen
-- ✅ Dateinamen-Parsing ("Artist - Title" Format)
-- ✅ Fehlerbehandlung bei ungültigen Dateien
-- ✅ Case-insensitive Dateierweiterungen
-- ✅ Filterung nach Extensions
+- ✅ Support for all audio formats (AAC, AU, FLAC, MP3, OGG, M4A, WAV, WMA)
+- ✅ Recursive/non-recursive scanning
+- ✅ Filename parsing ("Artist - Title" format)
+- ✅ Error handling for invalid files
+- ✅ Case-insensitive file extensions
+- ✅ Filtering by extensions
 
-**46 Tests** - Deckt alle Edge-Cases ab
+**46 Tests** - Covers all edge cases
 
-### 2. Unit-Tests (test_exporter.py)
+### 2. Unit Tests (test_exporter.py)
 
-**Testet:** Export in verschiedene Formate
+**Tests:** Export to different formats
 
-- ✅ CSV-Export (Soundiiz-kompatibel)
-  - Mit Sonderzeichen (Kommas, Anführungszeichen)
-  - Automatische Aufteilung bei großen Playlists
-  - Korrekte Header-Formatierung
-- ✅ JSON-Export (Pretty & Compact)
-- ✅ M3U-Export (Extended & Simple)
-- ✅ TXT-Export
-- ✅ Unicode-Support
+- ✅ CSV export (Soundiiz-compatible)
+  - With special characters (commas, quotes)
+  - Automatic splitting for large playlists
+  - Correct header formatting
+- ✅ JSON export (pretty & compact)
+- ✅ M3U export (extended & simple)
+- ✅ TXT export
+- ✅ Unicode support
 
-**24 Tests** - Validiert alle Export-Formate
+**24 Tests** - Validates all export formats
 
-### 3. Integration-Tests (test_integration.py)
+### 3. Integration Tests (test_integration.py)
 
-**Testet:** End-to-End Workflows mit echten Audiodateien
+**Tests:** End-to-end workflows with real audio files
 
 #### TestRealAudioFiles (5 Tests)
-Validiert Metadaten-Extraktion aus echten Audio-Dateien:
+Validates metadata extraction from real audio files:
 
 ```python
-# Beispiel: MP3 Metadaten-Test
+# Example: MP3 metadata test
 metadata = extractor.extract_metadata("test_file.mp3")
 assert metadata["title"] == "Loneliness"
 assert metadata["artist"] == "Tomcraft"
 assert metadata["album"] == "Loneliness"
 ```
 
-**Getestete Formate:**
+**Tested formats:**
 - MP3 (Rock/test_file.mp3)
 - FLAC (Rock/test_file.flac)
 - AAC (Pop/test_file.aac)
@@ -77,116 +77,116 @@ assert metadata["album"] == "Loneliness"
 - WMA (Electronic/test_file.wma)
 
 #### TestNestedDirectoryStructure (5 Tests)
-Testet verschachtelte Verzeichnisstrukturen:
+Tests nested directory structures:
 
-- ✅ Rekursives Scannen findet alle Dateien in Unterordnern
-- ✅ Nicht-rekursives Scannen nur Top-Level
-- ✅ Metadaten-Extraktion aus verschachtelten Strukturen
-- ✅ Filterung nach Extension in verschachtelten Ordnern
-- ✅ Multiple Formate im selben Verzeichnis
+- ✅ Recursive scanning finds all files in subdirectories
+- ✅ Non-recursive scanning only top-level
+- ✅ Metadata extraction from nested structures
+- ✅ Filtering by extension in nested folders
+- ✅ Multiple formats in same directory
 
 #### TestEndToEndWorkflow (3 Tests)
-Vollständige Workflows:
+Complete workflows:
 
-1. **CSV-Export-Workflow**
-   - Scannen → Extrahieren → CSV exportieren
-   - Validierung des Soundiiz-Formats
+1. **CSV Export Workflow**
+   - Scan → Extract → Export to CSV
+   - Validate Soundiiz format
    
-2. **JSON-Export-Workflow**
-   - Scannen → Extrahieren → JSON exportieren
-   - JSON-Struktur validieren
+2. **JSON Export Workflow**
+   - Scan → Extract → Export to JSON
+   - Validate JSON structure
 
-3. **Metadaten-Konsistenz**
-   - Gleicher Song in verschiedenen Formaten
-   - Konsistente Metadaten über Formate hinweg
+3. **Metadata Consistency**
+   - Same song in different formats
+   - Consistent metadata across formats
 
-## Test-Fixtures
+## Test Fixtures
 
-### Verzeichnisstruktur
+### Directory Structure
 
-Die Test-Fixtures simulieren eine echte Musikbibliothek:
+The test fixtures simulate a real music library:
 
 ```
 fixtures/music/
-├── Rock/              # Genre-Ordner mit mehreren Formaten
+├── Rock/              # Genre folder with multiple formats
 │   ├── test_file.mp3  # Loneliness - Tomcraft
 │   └── test_file.flac # Loneliness - Tomcraft
-├── Pop/               # Anderes Genre
+├── Pop/               # Different genre
 │   └── test_file.aac  # Loneliness - Tomcraft
-└── Electronic/        # Verschachteltes Genre
+└── Electronic/        # Nested genre
     ├── test_file.wma
-    └── Techno/        # Sub-Genre
+    └── Techno/        # Sub-genre
         └── test_file.ogg # Loneliness - Tomcraft
 ```
 
-### Echte Audiodateien
+### Real Audio Files
 
-Alle Test-Dateien sind **echte Audiodateien** mit eingebetteten Metadaten:
+All test files are **real audio files** with embedded metadata:
 
-| Datei | Format | Titel | Artist | Album |
-|-------|--------|-------|--------|-------|
+| File | Format | Title | Artist | Album |
+|------|--------|-------|--------|-------|
 | test_file.mp3 | MP3 | Loneliness | Tomcraft | Loneliness |
 | test_file.flac | FLAC | Loneliness | Tomcraft | Loneliness |
 | test_file.aac | AAC | Loneliness | Tomcraft | Loneliness |
 | test_file.ogg | OGG Vorbis | Loneliness | Tomcraft | Loneliness |
 | test_file.wma | WMA | test_file | Unknown Artist | Unknown Album |
 
-## Tests ausführen
+## Running Tests
 
-### Alle Tests
+### All Tests
 
 ```bash
 pytest
 ```
 
-### Mit Coverage
+### With Coverage
 
 ```bash
 pytest --cov=musiclist_for_soundiiz --cov-report=html
 ```
 
-### Nur Unit-Tests
+### Only Unit Tests
 
 ```bash
 pytest tests/test_extractor.py tests/test_exporter.py
 ```
 
-### Nur Integration-Tests
+### Only Integration Tests
 
 ```bash
 pytest tests/test_integration.py
 ```
 
-### Einzelne Test-Klasse
+### Single Test Class
 
 ```bash
 pytest tests/test_integration.py::TestRealAudioFiles
 ```
 
-### Einzelner Test
+### Single Test
 
 ```bash
 pytest tests/test_integration.py::TestRealAudioFiles::test_extract_mp3_metadata -v
 ```
 
-### Mit Verbose-Output
+### With Verbose Output
 
 ```bash
 pytest -v
 ```
 
-## Test-Coverage
+## Test Coverage
 
-Aktuell: **77% Code Coverage**
+Current: **77% Code Coverage**
 
 - `__init__.py`: 100%
 - `exporter.py`: 99%
 - `extractor.py`: 95%
-- `cli.py`: 18% (CLI wird hauptsächlich manuell getestet)
+- `cli.py`: 18% (CLI is mainly tested manually)
 
-## Neue Tests hinzufügen
+## Adding New Tests
 
-### Unit-Test Beispiel
+### Unit Test Example
 
 ```python
 def test_new_feature(self):
@@ -201,7 +201,7 @@ def test_new_feature(self):
     assert result == expected_value
 ```
 
-### Integration-Test mit Fixtures
+### Integration Test with Fixtures
 
 ```python
 def test_with_real_file(self, fixtures_dir):
@@ -219,7 +219,7 @@ def test_with_real_file(self, fixtures_dir):
 
 ## Continuous Integration
 
-Tests werden automatisch bei jedem Push/Pull Request ausgeführt:
+Tests are run automatically on every push/pull request:
 
 - **GitHub Actions** (`.github/workflows/ci.yml`)
 - **Multi-Platform**: Linux, Windows, macOS
@@ -227,43 +227,43 @@ Tests werden automatisch bei jedem Push/Pull Request ausgeführt:
 
 ## Best Practices
 
-1. **Jeden Test isoliert halten** - Keine Abhängigkeiten zwischen Tests
-2. **Fixtures verwenden** - Für wiederverwendbare Test-Daten
-3. **Klare Assertions** - Was wird getestet und warum
-4. **Edge Cases testen** - Leere Verzeichnisse, fehlerhafte Dateien, etc.
-5. **Reale Daten verwenden** - Integration-Tests mit echten Audiodateien
+1. **Keep each test isolated** - No dependencies between tests
+2. **Use fixtures** - For reusable test data
+3. **Clear assertions** - What is being tested and why
+4. **Test edge cases** - Empty directories, corrupted files, etc.
+5. **Use real data** - Integration tests with real audio files
 
-## Fehlersuche
+## Debugging
 
-### Test schlägt fehl
+### Test Fails
 
 ```bash
-# Einzelnen Test mit Verbose-Output ausführen
+# Run single test with verbose output
 pytest tests/test_integration.py::test_name -vv
 
-# Mit Debugger
+# With debugger
 pytest --pdb tests/test_integration.py::test_name
 ```
 
-### Fixtures nicht gefunden
+### Fixtures Not Found
 
 ```bash
-# Überprüfe, ob Fixtures existieren
+# Check if fixtures exist
 ls -la tests/fixtures/music/Rock/
 ```
 
-### Import-Fehler
+### Import Errors
 
 ```bash
-# Stelle sicher, dass Paket installiert ist
+# Make sure package is installed
 pip install -e .
 ```
 
-## Statistiken
+## Statistics
 
-- **Gesamt**: 59 Tests
-- **Unit-Tests**: 46
-- **Integration-Tests**: 13
-- **Test-Runtime**: ~0.3s
+- **Total**: 59 Tests
+- **Unit Tests**: 46
+- **Integration Tests**: 13
+- **Test Runtime**: ~0.3s
 - **Coverage**: 77%
-- **Status**: ✅ Alle Tests bestehen
+- **Status**: ✅ All tests passing
