@@ -70,7 +70,8 @@ def build_cli():
         "--hidden-import=mutagen.wave",
         "--hidden-import=mutagen.aac",
         "--collect-all=mutagen",
-        "src/musiclist_for_soundiiz/cli.py"
+        "--paths=src",
+        "cli_entrypoint.py"
     ]
     
     subprocess.check_call(cmd)
@@ -99,7 +100,8 @@ def build_gui():
         "--hidden-import=mutagen.aac",
         "--hidden-import=tkinter",
         "--collect-all=mutagen",
-        "src/musiclist_for_soundiiz/gui.py"
+        "--paths=src",
+        "gui_entrypoint.py"
     ]
     
     subprocess.check_call(cmd)
