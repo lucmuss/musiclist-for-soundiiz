@@ -64,7 +64,7 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     environment:
-      name: pypi
+      name: github-actions
       url: https://pypi.org/p/musiclist-for-soundiiz
     
     steps:
