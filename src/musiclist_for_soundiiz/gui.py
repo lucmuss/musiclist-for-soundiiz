@@ -20,7 +20,7 @@ class MusicListGUI:
     def __init__(self, root):
         """Initialize the GUI."""
         self.root = root
-        self.root.geometry("850x650")
+        self.root.geometry("850x750")
         self.root.resizable(True, True)
         
         # Initialize i18n
