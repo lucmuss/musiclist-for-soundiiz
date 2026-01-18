@@ -32,11 +32,11 @@ def install_pyinstaller():
     """Install PyInstaller if not already installed."""
     try:
         import PyInstaller
-        print(f"✓ PyInstaller {PyInstaller.__version__} already installed")
+        print(f"[OK] PyInstaller {PyInstaller.__version__} already installed")
     except ImportError:
         print("Installing PyInstaller...")
         subprocess.check_call([sys.executable, "-m", "pip", "install", "pyinstaller"])
-        print("✓ PyInstaller installed")
+        print("[OK] PyInstaller installed")
 
 
 def clean_build_dirs():
@@ -46,12 +46,12 @@ def clean_build_dirs():
         if Path(dir_name).exists():
             print(f"Cleaning {dir_name}/...")
             shutil.rmtree(dir_name)
-    print("✓ Build directories cleaned")
+    print("[OK] Build directories cleaned")
 
 
 def build_cli():
     """Build CLI executable."""
-    print("\n🔨 Building CLI executable...")
+    print("\n[*] Building CLI executable...")
     
     cmd = [
         "pyinstaller",
@@ -75,12 +75,12 @@ def build_cli():
     ]
     
     subprocess.check_call(cmd)
-    print("✓ CLI executable built")
+    print("[OK] CLI executable built")
 
 
 def build_gui():
     """Build GUI executable."""
-    print("\n🔨 Building GUI executable...")
+    print("\n[*] Building GUI executable...")
     
     cmd = [
         "pyinstaller",
@@ -105,7 +105,7 @@ def build_gui():
     ]
     
     subprocess.check_call(cmd)
-    print("✓ GUI executable built")
+    print("[OK] GUI executable built")
 
 
 def create_release_package():
@@ -118,21 +118,21 @@ def create_release_package():
     
     release_dir.mkdir(parents=True, exist_ok=True)
     
-    print(f"\n📦 Creating release package: {release_dir}")
+    print(f"\n[PKG] Creating release package: {release_dir}")
     
     # Copy executables
     dist_path = Path("dist")
     for exe in dist_path.glob("musiclist-for-soundiiz*"):
         if exe.is_file() and exe.name != release_dir.name:
             shutil.copy2(exe, release_dir)
-            print(f"  ✓ {exe.name}")
+            print(f"  [OK] {exe.name}")
     
     # Copy documentation
     docs = ["README.md", "LICENSE", "DOCKER.md"]
     for doc in docs:
         if Path(doc).exists():
             shutil.copy2(doc, release_dir)
-            print(f"  ✓ {doc}")
+            print(f"  [OK] {doc}")
     
     # Create quick start guide
     quickstart = release_dir / "QUICKSTART.txt"
@@ -161,11 +161,11 @@ Examples:
 
 For full documentation, see README.md
 """)
-    print(f"  ✓ QUICKSTART.txt")
+    print(f"  [OK] QUICKSTART.txt")
     
     # Create archive
     archive_name = f"musiclist-for-soundiiz-{platform_name}"
-    print(f"\n📦 Creating archive: {archive_name}.zip")
+    print(f"\n[PKG] Creating archive: {archive_name}.zip")
     
     shutil.make_archive(
         str(dist_path / archive_name),
@@ -174,10 +174,10 @@ For full documentation, see README.md
         release_dir.name
     )
     
-    print(f"✓ Release package created: dist/{archive_name}.zip")
+    print(f"[OK] Release package created: dist/{archive_name}.zip")
     
     # Print file sizes
-    print("\n📊 File sizes:")
+    print("\n[INFO] File sizes:")
     for exe in release_dir.glob("musiclist-for-soundiiz*"):
         size_mb = exe.stat().st_size / (1024 * 1024)
         print(f"  {exe.name}: {size_mb:.1f} MB")
@@ -185,7 +185,7 @@ For full documentation, see README.md
 
 def main():
     """Main build process."""
-    print("🚀 MusicList for Soundiiz - Binary Build\n")
+    print("[*] MusicList for Soundiiz - Binary Build\n")
     print(f"Platform: {get_platform_name()}")
     print(f"Python: {sys.version.split()[0]}\n")
     
@@ -203,14 +203,14 @@ def main():
         # Create release package
         create_release_package()
         
-        print("\n✅ Build completed successfully!\n")
-        print("📦 Artifacts:")
+        print("\n[OK] Build completed successfully!\n")
+        print("[PKG] Artifacts:")
         print("  - dist/musiclist-for-soundiiz (CLI)")
         print("  - dist/musiclist-for-soundiiz-gui (GUI)")
         print(f"  - dist/musiclist-for-soundiiz-{get_platform_name()}.zip (Release package)")
         
     except Exception as e:
-        print(f"\n❌ Build failed: {e}")
+        print(f"\n[ERROR] Build failed: {e}")
         sys.exit(1)
 
 
