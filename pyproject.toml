@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "musiclist-for-soundiiz"
-version = "1.0.7"
+version = "1.0.8"
 description = "Extract music file metadata for Soundiiz import"
 readme = "README.md"
 requires-python = ">=3.8"
