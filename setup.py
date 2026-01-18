@@ -39,6 +39,7 @@ setup(
     entry_points={
         "console_scripts": [
             "musiclist-for-soundiiz=musiclist_for_soundiiz.cli:main",
+            "musiclist-for-soundiiz-gui=musiclist_for_soundiiz.gui:main",
         ],
     },
     classifiers=[

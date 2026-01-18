@@ -36,11 +36,32 @@ Professional command-line tool for extracting music file metadata for Soundiiz i
 
 ## 🚀 Installation
 
-### Prerequisites
+### Option 1: Docker (Recommended - No Installation Required!)
+
+```bash
+# Quick start with Docker
+docker build -t musiclist-for-soundiiz .
+
+docker run --rm \
+  -v /path/to/music:/music:ro \
+  -v $(pwd)/output:/output \
+  musiclist-for-soundiiz \
+  -i /music -o /output/playlist.csv
+```
+
+**📖 See [DOCKER.md](DOCKER.md) for complete Docker guide**
+
+### Option 2: Python Installation
+
+#### Prerequisites
 
 - Python 3.8 or higher
+- **Tkinter** (for GUI, optional):
+  - Ubuntu/Debian: `sudo apt-get install python3-tk`
+  - macOS: Pre-installed with Python
+  - Windows: Pre-installed with Python
 
-### Install
+#### Install
 
 ```bash
 # Clone the repository
@@ -60,6 +81,21 @@ pip install -e ".[dev]"
 
 ## ⚡ Quick Start
 
+### GUI Version (Recommended for Beginners)
+
+```bash
+# Launch the graphical interface
+musiclist-for-soundiiz-gui
+```
+
+**Features:**
+- 🖱️ Easy drag-and-drop interface
+- 📊 Real-time progress tracking
+- 🎨 Visual duplicate detection
+- ✅ No command line knowledge required
+
+### Command Line Version
+
 ```bash
 # Scan music files and export as CSV
 musiclist-for-soundiiz -i /path/to/music -o output.csv
@@ -69,7 +105,25 @@ musiclist-for-soundiiz -i /path/to/music -o output.csv
 
 ## 📚 Usage Examples
 
-### 🎯 Basic Usage
+### 🖥️ GUI Application
+
+The easiest way to use MusicList for Soundiiz:
+
+```bash
+# Start the GUI
+musiclist-for-soundiiz-gui
+```
+
+**GUI Features:**
+1. **Add Directories**: Click "Add Directory" to select music folders
+2. **Choose Output**: Select file name and format (CSV, JSON, M3U, TXT)
+3. **Options**: Enable duplicate detection, recursive scanning
+4. **Process**: Click "Process Files" and watch the progress
+5. **Done**: Get visual confirmation and find your exported file
+
+Perfect for users who prefer a visual interface over command line!
+
+### 🎯 Command Line - Basic Usage
 
 ```bash
 # Scan directory and create CSV
