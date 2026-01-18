@@ -36,7 +36,27 @@ Professional command-line tool for extracting music file metadata for Soundiiz i
 
 ## 🚀 Installation
 
-### Option 1: Docker (Recommended - No Installation Required!)
+### Option 1: PyPI (Recommended - Easiest!)
+
+```bash
+# Install from PyPI
+pip install musiclist-for-soundiiz
+
+# That's it! Start using it:
+musiclist-for-soundiiz -i ~/Music -o output.csv
+
+# Or launch the GUI:
+musiclist-for-soundiiz-gui
+```
+
+**Prerequisites**: Python 3.8 or higher
+
+For GUI support on Linux:
+```bash
+sudo apt-get install python3-tk  # Ubuntu/Debian
+```
+
+### Option 2: Docker (No Python Required!)
 
 ```bash
 # Quick start with Docker
@@ -51,7 +71,7 @@ docker run --rm \
 
 **📖 See [DOCKER.md](DOCKER.md) for complete Docker guide**
 
-### Option 2: Python Installation
+### Option 3: From Source (Development)
 
 #### Prerequisites
 

@@ -1,7 +1,7 @@
 """MusicList for Soundiiz - Extract music file metadata for Soundiiz import."""
 
-__version__ = "1.0.0"
-__author__ = "Your Name"
+__version__ = "1.0.5"
+__author__ = "Luc Muss"
 __license__ = "MIT"
 
 from .cli import main
