@@ -1,6 +1,6 @@
 """MusicList for Soundiiz - Extract music file metadata for Soundiiz import."""
 
-__version__ = "1.0.6"
+__version__ = "1.0.7"
 __author__ = "Luc Muss"
 __license__ = "MIT"
 

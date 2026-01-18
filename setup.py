@@ -9,7 +9,7 @@ long_description = (this_directory / "README.md").read_text(encoding="utf-8")
 
 setup(
     name="musiclist-for-soundiiz",
-    version="1.0.6",
+    version="1.0.7",
     author="Luc Muss",
     author_email="lucmuss@users.noreply.github.com",
     description="Extract music file metadata for Soundiiz import",
