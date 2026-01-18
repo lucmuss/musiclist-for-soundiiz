@@ -122,7 +122,7 @@ class MusicListGUI:
             list_frame,
             yscrollcommand=scrollbar.set,
             selectmode=tk.EXTENDED,
-            height=4
+            height=3
         )
         self.dir_listbox.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
         scrollbar.config(command=self.dir_listbox.yview)
