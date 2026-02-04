@@ -1,11 +1,7 @@
 # Include important documentation files
 include README.md
 include LICENSE
-include CONTRIBUTING.md
 include DOCKER.md
-include GUI_INSTALLATION.md
-include GUI_QUICKSTART.md
-include BINARIES.md
 
 # Include documentation directory
 recursive-include docs *.md
@@ -16,14 +12,12 @@ recursive-include docs *.jpg
 recursive-include examples *.sh
 recursive-include examples *.py
 
-# Include requirements files
-include requirements.txt
-include requirements-dev.txt
-
 # Include configuration files
 include pyproject.toml
-include mypy.ini
 include .gitignore
+include .env.example
+include Justfile
+include .pre-commit-config.yaml
 
 # Exclude unnecessary files
 global-exclude __pycache__

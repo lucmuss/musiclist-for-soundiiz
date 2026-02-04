@@ -6,45 +6,38 @@ TRANSLATIONS = {
         # Window
         "window_title": "MusicList for Soundiiz",
         "subtitle": "Extract music metadata and create playlists",
-        
         # Sections
         "input_directories": "📁 Input Directories",
         "output": "📄 Output",
         "options": "⚙️ Options",
         "progress": "📊 Progress",
-        
         # Input section
         "add_directory": "Add Directory",
         "remove_selected": "Remove Selected",
         "clear_all": "Clear All",
         "tip_add_directory": "💡 Tip: Click 'Add Directory' or drag folders here",
-        
         # Output section
         "output_file": "Output File:",
         "browse": "Browse",
         "format": "Format:",
         "max_songs": "Max songs per file:",
-        
         # Options
         "scan_recursive": "Scan subdirectories recursively",
         "detect_duplicates": "Detect duplicates",
         "remove_duplicates": "Remove duplicates",
         "strategy": "Strategy:",
-        
         # Buttons
         "process_files": "🚀 Process Files",
         "clear_log": "Clear Log",
         "help": "Help",
         "about": "About",
         "language": "Language:",
-        
         # Status
         "ready": "Ready",
         "ready_to_process": "Ready to process music files",
         "processing": "Processing...",
         "completed": "Completed successfully!",
         "error_occurred": "Error occurred",
-        
         # Messages
         "info": "Info",
         "warning": "Warning",
@@ -57,7 +50,6 @@ TRANSLATIONS = {
         "no_files_found": "No music files found in selected directories",
         "success_message": "Successfully processed {count} songs!\\n\\nOutput: {file}",
         "error_message": "An error occurred:\\n{error}",
-        
         # Log messages
         "added": "Added:",
         "removed": "Removed:",
@@ -76,7 +68,6 @@ TRANSLATIONS = {
         "no_duplicates": "✓ No duplicates found",
         "exporting_to": "\\nExporting to {format}...",
         "export_completed": "✓ Export completed: {file}",
-        
         # Help
         "help_title": "MusicList for Soundiiz - Help",
         "help_text": """1. Add Directories:
@@ -99,7 +90,6 @@ AAC, AU, FLAC, MP3, OGG, M4A, WAV, WMA
 
 For more info, visit:
 https://github.com/lucmuss/musiclist-for-soundiiz""",
-        
         # About
         "about_title": "About",
         "about_text": """MusicList for Soundiiz
@@ -120,50 +110,42 @@ Created with ❤️ for the music community
 GitHub: github.com/lucmuss/musiclist-for-soundiiz
 License: MIT""",
     },
-    
     "de": {
         # Window
         "window_title": "MusicList für Soundiiz",
         "subtitle": "Musik-Metadaten extrahieren und Playlists erstellen",
-        
         # Sections
         "input_directories": "📁 Eingabe-Verzeichnisse",
         "output": "📄 Ausgabe",
         "options": "⚙️ Optionen",
         "progress": "📊 Fortschritt",
-        
         # Input section
         "add_directory": "Verzeichnis hinzufügen",
         "remove_selected": "Ausgewählte entfernen",
         "clear_all": "Alle löschen",
         "tip_add_directory": "💡 Tipp: Klicke 'Verzeichnis hinzufügen' oder ziehe Ordner hierher",
-        
         # Output section
         "output_file": "Ausgabedatei:",
         "browse": "Durchsuchen",
         "format": "Format:",
         "max_songs": "Max. Songs pro Datei:",
-        
         # Options
         "scan_recursive": "Unterverzeichnisse rekursiv scannen",
         "detect_duplicates": "Duplikate erkennen",
         "remove_duplicates": "Duplikate entfernen",
         "strategy": "Strategie:",
-        
         # Buttons
         "process_files": "🚀 Dateien verarbeiten",
         "clear_log": "Log löschen",
         "help": "Hilfe",
         "about": "Über",
         "language": "Sprache:",
-        
         # Status
         "ready": "Bereit",
         "ready_to_process": "Bereit zur Verarbeitung von Musikdateien",
         "processing": "Verarbeite...",
         "completed": "Erfolgreich abgeschlossen!",
         "error_occurred": "Fehler aufgetreten",
-        
         # Messages
         "info": "Info",
         "warning": "Warnung",
@@ -176,7 +158,6 @@ License: MIT""",
         "no_files_found": "Keine Musikdateien in den ausgewählten Verzeichnissen gefunden",
         "success_message": "Erfolgreich {count} Songs verarbeitet!\\n\\nAusgabe: {file}",
         "error_message": "Ein Fehler ist aufgetreten:\\n{error}",
-        
         # Log messages
         "added": "Hinzugefügt:",
         "removed": "Entfernt:",
@@ -193,7 +174,6 @@ License: MIT""",
         "no_duplicates": "✓ Keine Duplikate gefunden",
         "exporting_to": "\\nExportiere nach {format}...",
         "export_completed": "✓ Export abgeschlossen: {file}",
-        
         # Help
         "help_title": "MusicList für Soundiiz - Hilfe",
         "help_text": """1. Verzeichnisse hinzufügen:
@@ -216,7 +196,6 @@ AAC, AU, FLAC, MP3, OGG, M4A, WAV, WMA
 
 Mehr Infos:
 https://github.com/lucmuss/musiclist-for-soundiiz""",
-        
         # About
         "about_title": "Über",
         "about_text": """MusicList für Soundiiz
@@ -237,7 +216,6 @@ Erstellt mit ❤️ für die Musik-Community
 GitHub: github.com/lucmuss/musiclist-for-soundiiz
 Lizenz: MIT""",
     },
-    
     "es": {
         "window_title": "MusicList para Soundiiz",
         "subtitle": "Extraer metadatos de música y crear listas de reproducción",
@@ -268,7 +246,6 @@ Lizenz: MIT""",
         "completed": "¡Completado con éxito!",
         "success_message": "¡{count} canciones procesadas con éxito!\\n\\nSalida: {file}",
     },
-    
     "fr": {
         "window_title": "MusicList pour Soundiiz",
         "subtitle": "Extraire les métadonnées musicales et créer des listes de lecture",
@@ -299,7 +276,6 @@ Lizenz: MIT""",
         "completed": "Terminé avec succès !",
         "success_message": "{count} chansons traitées avec succès !\\n\\nSortie : {file}",
     },
-    
     "pt": {
         "window_title": "MusicList para Soundiiz",
         "subtitle": "Extrair metadados de música e criar playlists",
@@ -330,7 +306,6 @@ Lizenz: MIT""",
         "completed": "Concluído com sucesso!",
         "success_message": "{count} músicas processadas com sucesso!\\n\\nSaída: {file}",
     },
-    
     "ja": {
         "window_title": "MusicList for Soundiiz",
         "subtitle": "音楽メタデータの抽出とプレイリストの作成",
@@ -360,7 +335,6 @@ Lizenz: MIT""",
         "completed": "正常に完了しました！",
         "success_message": "{count}曲が正常に処理されました！\\n\\n出力：{file}",
     },
-    
     "zh": {
         "window_title": "MusicList for Soundiiz",
         "subtitle": "提取音乐元数据并创建播放列表",
@@ -390,7 +364,6 @@ Lizenz: MIT""",
         "completed": "成功完成！",
         "success_message": "成功处理了{count}首歌曲！\\n\\n输出：{file}",
     },
-    
     "it": {
         "window_title": "MusicList per Soundiiz",
         "subtitle": "Estrai metadati musicali e crea playlist",
@@ -421,7 +394,6 @@ Lizenz: MIT""",
         "completed": "Completato con successo!",
         "success_message": "Elaborate {count} canzoni con successo!\\n\\nOutput: {file}",
     },
-    
     "nl": {
         "window_title": "MusicList voor Soundiiz",
         "subtitle": "Muziekmetadata extraheren en afspeellijsten maken",
@@ -452,7 +424,6 @@ Lizenz: MIT""",
         "completed": "Met succes voltooid!",
         "success_message": "{count} nummers succesvol verwerkt!\\n\\nUitvoer: {file}",
     },
-    
     "ru": {
         "window_title": "MusicList для Soundiiz",
         "subtitle": "Извлечение музыкальных метаданных и создание плейлистов",
@@ -483,7 +454,6 @@ Lizenz: MIT""",
         "completed": "Успешно завершено!",
         "success_message": "Успешно обработано {count} песен!\\n\\nВывод: {file}",
     },
-    
     "ko": {
         "window_title": "MusicList for Soundiiz",
         "subtitle": "음악 메타데이터 추출 및 재생목록 생성",
@@ -514,7 +484,6 @@ Lizenz: MIT""",
         "completed": "성공적으로 완료!",
         "success_message": "{count}곡이 성공적으로 처리되었습니다!\\n\\n출력: {file}",
     },
-    
     "ar": {
         "window_title": "MusicList لـ Soundiiz",
         "subtitle": "استخراج بيانات الموسيقى وإنشاء قوائم التشغيل",
@@ -566,11 +535,11 @@ LANGUAGE_NAMES = {
 
 class I18n:
     """Simple internationalization class."""
-    
+
     def __init__(self, language="en"):
         """Initialize with default language."""
         self.set_language(language)
-    
+
     def set_language(self, language):
         """Set the current language."""
         if language in TRANSLATIONS:
@@ -579,25 +548,25 @@ class I18n:
         else:
             self.current_lang = "en"
             self.trans = TRANSLATIONS["en"]
-    
+
     def get(self, key, **kwargs):
         """Get translated string, fall back to English if not found."""
         # Try current language
         text = self.trans.get(key)
-        
+
         # Fall back to English
         if text is None:
             text = TRANSLATIONS["en"].get(key, key)
-        
+
         # Format with kwargs if provided
         if kwargs:
             try:
                 text = text.format(**kwargs)
             except KeyError:
                 pass
-                
+
         return text
-    
+
     def __call__(self, key, **kwargs):
         """Shortcut for get()."""
         return self.get(key, **kwargs)

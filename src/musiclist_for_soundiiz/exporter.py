@@ -61,9 +61,7 @@ class CSVExporter(BaseExporter):
         output_dir.mkdir(parents=True, exist_ok=True)
 
         # Split into multiple files if necessary
-        total_files = (
-            len(metadata_list) + self.max_songs_per_file - 1
-        ) // self.max_songs_per_file
+        total_files = (len(metadata_list) + self.max_songs_per_file - 1) // self.max_songs_per_file
 
         for file_index in range(total_files):
             start_idx = file_index * self.max_songs_per_file
@@ -93,8 +91,7 @@ class CSVExporter(BaseExporter):
                     csvfile.write(f"{title},{artist},{album},{isrc},\n")
 
             logger.info(
-                f"Exported {len(chunk)} songs to {file_path} "
-                f"(file {file_index + 1}/{total_files})"
+                f"Exported {len(chunk)} songs to {file_path} (file {file_index + 1}/{total_files})"
             )
 
     @staticmethod
@@ -152,9 +149,7 @@ class JSONExporter(BaseExporter):
         output_dir.mkdir(parents=True, exist_ok=True)
 
         # Split into multiple files if necessary
-        total_files = (
-            len(metadata_list) + self.max_songs_per_file - 1
-        ) // self.max_songs_per_file
+        total_files = (len(metadata_list) + self.max_songs_per_file - 1) // self.max_songs_per_file
 
         for file_index in range(total_files):
             start_idx = file_index * self.max_songs_per_file
@@ -181,8 +176,7 @@ class JSONExporter(BaseExporter):
                     json.dump(export_data, jsonfile, ensure_ascii=False)
 
             logger.info(
-                f"Exported {len(chunk)} songs to {file_path} "
-                f"(file {file_index + 1}/{total_files})"
+                f"Exported {len(chunk)} songs to {file_path} (file {file_index + 1}/{total_files})"
             )
 
 
@@ -221,9 +215,7 @@ class M3UExporter(BaseExporter):
         output_dir.mkdir(parents=True, exist_ok=True)
 
         # Split into multiple files if necessary
-        total_files = (
-            len(metadata_list) + self.max_songs_per_file - 1
-        ) // self.max_songs_per_file
+        total_files = (len(metadata_list) + self.max_songs_per_file - 1) // self.max_songs_per_file
 
         for file_index in range(total_files):
             start_idx = file_index * self.max_songs_per_file
@@ -253,8 +245,7 @@ class M3UExporter(BaseExporter):
                     m3ufile.write(f"{path}\n")
 
             logger.info(
-                f"Exported {len(chunk)} songs to {file_path} "
-                f"(file {file_index + 1}/{total_files})"
+                f"Exported {len(chunk)} songs to {file_path} (file {file_index + 1}/{total_files})"
             )
 
 
@@ -291,9 +282,7 @@ class TXTExporter(BaseExporter):
         output_dir.mkdir(parents=True, exist_ok=True)
 
         # Split into multiple files if necessary
-        total_files = (
-            len(metadata_list) + self.max_songs_per_file - 1
-        ) // self.max_songs_per_file
+        total_files = (len(metadata_list) + self.max_songs_per_file - 1) // self.max_songs_per_file
 
         for file_index in range(total_files):
             start_idx = file_index * self.max_songs_per_file
@@ -315,8 +304,7 @@ class TXTExporter(BaseExporter):
                     txtfile.write(f"{title} - {artist}\n")
 
             logger.info(
-                f"Exported {len(chunk)} songs to {file_path} "
-                f"(file {file_index + 1}/{total_files})"
+                f"Exported {len(chunk)} songs to {file_path} (file {file_index + 1}/{total_files})"
             )
 
 
@@ -345,8 +333,7 @@ def get_exporter(format_type: str, **kwargs) -> BaseExporter:
 
     if format_type not in exporters:
         raise ValueError(
-            f"Unsupported format: {format_type}. "
-            f"Supported formats: {', '.join(exporters.keys())}"
+            f"Unsupported format: {format_type}. Supported formats: {', '.join(exporters.keys())}"
         )
 
     return exporters[format_type](**kwargs)

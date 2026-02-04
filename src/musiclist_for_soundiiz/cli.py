@@ -196,7 +196,7 @@ def main(argv: Optional[list] = None) -> int:
         setup_logging(args.verbose)
 
     logger.info(f"MusicList for Soundiiz v{__version__}")
-    
+
     # Support batch processing of multiple directories
     input_dirs = args.input if isinstance(args.input, list) else [args.input]
     logger.info(f"Scanning {len(input_dirs)} director{'ies' if len(input_dirs) > 1 else 'y'}...")
@@ -236,20 +236,20 @@ def main(argv: Optional[list] = None) -> int:
         metadata_to_export = all_metadata
         if args.detect_duplicates or args.remove_duplicates or args.duplicate_report:
             detector = DuplicateDetector(case_sensitive=False)
-            
+
             if args.detect_duplicates or args.duplicate_report:
                 logger.info("Detecting duplicates...")
                 duplicates = detector.find_duplicates(all_metadata)
-                
+
                 if duplicates:
                     logger.warning(
                         f"Found {len(duplicates)} duplicate song groups "
                         f"({sum(len(v) for v in duplicates.values())} total files)"
                     )
-                    
+
                     # Generate and save/display report
                     report = detector.get_duplicate_report(all_metadata)
-                    
+
                     if args.duplicate_report:
                         with open(args.duplicate_report, "w", encoding="utf-8") as f:
                             f.write(report)
@@ -258,7 +258,7 @@ def main(argv: Optional[list] = None) -> int:
                         print("\n" + report)
                 else:
                     logger.info("No duplicates found.")
-            
+
             if args.remove_duplicates:
                 logger.info(f"Removing duplicates (strategy: {args.duplicate_strategy})...")
                 unique_list, removed_list = detector.remove_duplicates(
@@ -269,7 +269,7 @@ def main(argv: Optional[list] = None) -> int:
                     f"Removed {len(removed_list)} duplicates, "
                     f"{len(unique_list)} unique songs remaining"
                 )
-        
+
         # Use the (possibly filtered) metadata for export
         if not metadata_to_export:
             logger.warning("No songs to export after duplicate removal!")
@@ -282,15 +282,15 @@ def main(argv: Optional[list] = None) -> int:
         elif args.format == "json":
             exporter_kwargs["pretty"] = not args.no_pretty_json
             exporter_kwargs["max_songs_per_file"] = args.max_songs_per_file
-        elif args.format == "m3u":
-            exporter_kwargs["max_songs_per_file"] = args.max_songs_per_file
-        elif args.format == "txt":
+        elif args.format == "m3u" or args.format == "txt":
             exporter_kwargs["max_songs_per_file"] = args.max_songs_per_file
 
         exporter = get_exporter(args.format, **exporter_kwargs)
 
         # Export metadata
-        logger.info(f"Exporting {len(metadata_to_export)} songs to {args.format.upper()} format: {args.output}")
+        logger.info(
+            f"Exporting {len(metadata_to_export)} songs to {args.format.upper()} format: {args.output}"
+        )
         exporter.export(metadata_to_export, args.output)
 
         logger.info("✓ Export completed successfully!")

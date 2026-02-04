@@ -5,9 +5,13 @@ from pathlib import Path
 
 import pytest
 
-from musiclist_for_soundiiz.exporter import (CSVExporter, JSONExporter,
-                                             M3UExporter, TXTExporter,
-                                             get_exporter)
+from musiclist_for_soundiiz.exporter import (
+    CSVExporter,
+    JSONExporter,
+    M3UExporter,
+    TXTExporter,
+    get_exporter,
+)
 
 
 @pytest.fixture
@@ -159,7 +163,7 @@ class TestJSONExporter:
 
         assert output_file.exists()
 
-        with open(output_file, "r", encoding="utf-8") as f:
+        with open(output_file, encoding="utf-8") as f:
             data = json.load(f)
 
         assert "total_songs" in data
@@ -219,7 +223,7 @@ class TestJSONExporter:
 
         exporter.export(metadata, str(output_file))
 
-        with open(output_file, "r", encoding="utf-8") as f:
+        with open(output_file, encoding="utf-8") as f:
             data = json.load(f)
 
         assert data["songs"][0]["title"] == "Über den Wolken"

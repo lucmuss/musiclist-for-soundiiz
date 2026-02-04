@@ -3,7 +3,7 @@
 [![CI](https://github.com/lucmuss/musiclist-for-soundiiz/workflows/CI/badge.svg)](https://github.com/lucmuss/musiclist-for-soundiiz/actions)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![Code style: ruff](https://img.shields.io/badge/code%20style-ruff-000000.svg)](https://github.com/astral-sh/ruff)
 
 Professional command-line tool for extracting music file metadata for Soundiiz import.
 
@@ -343,28 +343,30 @@ Another Song - Another Artist
 git clone https://github.com/lucmuss/musiclist-for-soundiiz.git
 cd musiclist-for-soundiiz
 
-# Create virtual environment
-python3 -m venv venv
-source venv/bin/activate
+# Install uv (if not already installed)
+curl -LsSf https://astral.sh/uv/install.sh | sh
 
-# Install development dependencies
-pip install -e ".[dev]"
+# Setup project with dependencies
+just setup
+
+# Or manually:
+# uv sync --all-extras
 ```
 
 ### Code Quality
 
 ```bash
-# Format code
-black src tests
+# Format and fix code
+just format
 
-# Sort imports
-isort src tests
-
-# Linting
-flake8 src tests --max-line-length=100
+# Check code quality (linting + formatting)
+just lint
 
 # Type checking
-mypy src
+just typecheck
+
+# Full quality check
+just check
 ```
 
 ## 🧪 Testing
@@ -373,16 +375,16 @@ mypy src
 
 ```bash
 # Run all tests
-pytest
+just test
 
 # With coverage report
-pytest --cov=musiclist_for_soundiiz --cov-report=html
+just test  # (coverage is configured in pyproject.toml)
 
 # Specific test file
-pytest tests/test_extractor.py
+uv run pytest tests/test_extractor.py
 
 # Verbose mode
-pytest -v
+uv run pytest -v
 ```
 
 ### Test Coverage
@@ -415,12 +417,16 @@ musiclist-for-soundiiz/
 │   ├── test_duplicate_detector.py # Duplicate detection tests
 │   ├── test_cli.py                # CLI tests
 │   └── test_integration.py        # Integration tests
+├── docker/
+│   ├── Dockerfile                 # Docker image build
+│   └── entrypoint.sh              # Container entrypoint
 ├── .github/
 │   └── workflows/
 │       └── ci.yml                 # GitHub Actions CI/CD
-├── setup.py                       # Package configuration
-├── requirements.txt               # Dependencies
-├── requirements-dev.txt           # Dev dependencies
+├── pyproject.toml                 # Project configuration (PEP 621)
+├── Justfile                       # Task runner
+├── .pre-commit-config.yaml        # Pre-commit hooks
+├── .env.example                   # Environment variables template
 ├── mypy.ini                       # MyPy configuration
 ├── .gitignore
 ├── LICENSE
@@ -438,10 +444,11 @@ Contributions are welcome! See [CONTRIBUTING.md](CONTRIBUTING.md) for details.
 2. Create a feature branch (`git checkout -b feature/amazing-feature`)
 3. Make your changes
 4. Add tests
-5. Run tests (`pytest`)
-6. Commit (`git commit -m 'feat: add amazing feature'`)
-7. Push (`git push origin feature/amazing-feature`)
-8. Create a Pull Request
+5. Run tests (`just test`)
+6. Run quality checks (`just check`)
+7. Commit (`git commit -m 'feat: add amazing feature'`)
+8. Push (`git push origin feature/amazing-feature`)
+9. Create a Pull Request
 
 ## 📝 License
 

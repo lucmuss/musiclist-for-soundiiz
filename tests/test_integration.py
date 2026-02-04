@@ -175,16 +175,16 @@ class TestNestedDirectoryStructure:
     def test_multiple_formats_in_same_directory(self, fixtures_dir):
         """Test handling multiple audio formats in the same directory."""
         rock_dir = fixtures_dir / "Rock"
-        
+
         if not rock_dir.exists():
             pytest.skip(f"Rock directory not found: {rock_dir}")
-        
+
         extractor = MusicFileExtractor()
         files = extractor.find_music_files(str(rock_dir), recursive=False)
-        
+
         # Should have at least one file
         assert len(files) > 0
-        
+
         # Rock directory should have both MP3 and FLAC
         extensions = {f.suffix.lower() for f in files}
         assert len(extensions) > 0  # At least one format present
@@ -246,7 +246,7 @@ class TestEndToEndWorkflow:
         # Verify JSON is valid
         import json
 
-        with open(output_file, "r", encoding="utf-8") as f:
+        with open(output_file, encoding="utf-8") as f:
             data = json.load(f)
 
         assert "total_songs" in data

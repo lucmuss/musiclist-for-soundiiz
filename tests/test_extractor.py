@@ -17,9 +17,9 @@ class TestMusicFileExtractor:
         required_formats = {".aac", ".au", ".flac", ".mp3", ".ogg"}
 
         for fmt in required_formats:
-            assert (
-                fmt in extractor.SUPPORTED_EXTENSIONS
-            ), f"Format {fmt} should be in SUPPORTED_EXTENSIONS"
+            assert fmt in extractor.SUPPORTED_EXTENSIONS, (
+                f"Format {fmt} should be in SUPPORTED_EXTENSIONS"
+            )
 
     def test_extractor_with_custom_extensions(self):
         """Test extractor initialization with custom extensions."""
@@ -203,9 +203,7 @@ class TestMusicFileExtractor:
         """Test _safe_get_first with multiple keys."""
         mock_audio = {"albumartist": ["Album Artist"]}
 
-        result = MusicFileExtractor._safe_get_first(
-            mock_audio, ["artist", "albumartist"]
-        )
+        result = MusicFileExtractor._safe_get_first(mock_audio, ["artist", "albumartist"])
         assert result == "Album Artist"
 
     def test_safe_get_first_with_empty_value(self):

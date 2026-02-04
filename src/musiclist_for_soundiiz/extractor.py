@@ -37,9 +37,7 @@ class MusicFileExtractor:
             # Validate extensions
             invalid_exts = self.extensions - self.SUPPORTED_EXTENSIONS
             if invalid_exts:
-                logger.warning(
-                    f"Unsupported extensions will be ignored: {invalid_exts}"
-                )
+                logger.warning(f"Unsupported extensions will be ignored: {invalid_exts}")
                 self.extensions = self.extensions & self.SUPPORTED_EXTENSIONS
         else:
             self.extensions = self.SUPPORTED_EXTENSIONS
@@ -77,10 +75,10 @@ class MusicFileExtractor:
 
             for file_path in dir_path.glob(pattern):
                 # Skip macOS resource fork files and hidden files
-                if file_path.name.startswith('._') or file_path.name.startswith('.'):
+                if file_path.name.startswith("._") or file_path.name.startswith("."):
                     logger.debug(f"Skipping hidden/system file: {file_path}")
                     continue
-                    
+
                 if file_path.is_file() and file_path.suffix.lower() in self.extensions:
                     music_files.append(file_path)
                     logger.debug(f"Found music file: {file_path}")
@@ -113,9 +111,7 @@ class MusicFileExtractor:
 
             # Extract metadata from tags
             title_meta = self._safe_get_first(audio, ["title"])
-            artist_meta = self._safe_get_first(
-                audio, ["artist", "albumartist", "performer"]
-            )
+            artist_meta = self._safe_get_first(audio, ["artist", "albumartist", "performer"])
             album_meta = self._safe_get_first(audio, ["album"])
             isrc_meta = self._safe_get_first(audio, ["isrc"])
             genre_meta = self._safe_get_first(audio, ["genre"])
@@ -159,9 +155,7 @@ class MusicFileExtractor:
             logger.error(f"Error extracting metadata from {file_path}: {e}")
             raise ValueError(f"Failed to extract metadata: {e}") from e
 
-    def extract_all(
-        self, directory: str, recursive: bool = True
-    ) -> List[Dict[str, str]]:
+    def extract_all(self, directory: str, recursive: bool = True) -> List[Dict[str, str]]:
         """
         Find and extract metadata from all music files in a directory.
 

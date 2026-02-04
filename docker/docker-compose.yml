@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   musiclist:
-    build: .
+    build: ./docker
     image: musiclist-for-soundiiz:latest
     container_name: musiclist-soundiiz
     volumes:

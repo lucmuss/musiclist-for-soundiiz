@@ -64,9 +64,7 @@ class DuplicateDetector:
             song_index[key].append(metadata)
 
         # Filter for actual duplicates (2+ entries)
-        duplicates = {
-            key: entries for key, entries in song_index.items() if len(entries) > 1
-        }
+        duplicates = {key: entries for key, entries in song_index.items() if len(entries) > 1}
 
         logger.info(
             f"Found {len(duplicates)} duplicate song groups "
@@ -105,9 +103,7 @@ class DuplicateDetector:
                 to_remove = entries[:-1]
             elif strategy == "keep_shortest_path":
                 # Sort by path length and keep shortest
-                sorted_entries = sorted(
-                    entries, key=lambda x: len(x.get("file_path", ""))
-                )
+                sorted_entries = sorted(entries, key=lambda x: len(x.get("file_path", "")))
                 to_remove = sorted_entries[1:]
             else:
                 raise ValueError(f"Unknown strategy: {strategy}")
@@ -116,22 +112,14 @@ class DuplicateDetector:
                 files_to_remove.add(entry.get("file_path", ""))
 
         # Split into unique and removed lists
-        unique_list = [
-            m for m in metadata_list if m.get("file_path", "") not in files_to_remove
-        ]
-        removed_list = [
-            m for m in metadata_list if m.get("file_path", "") in files_to_remove
-        ]
+        unique_list = [m for m in metadata_list if m.get("file_path", "") not in files_to_remove]
+        removed_list = [m for m in metadata_list if m.get("file_path", "") in files_to_remove]
 
-        logger.info(
-            f"Removed {len(removed_list)} duplicate files using strategy '{strategy}'"
-        )
+        logger.info(f"Removed {len(removed_list)} duplicate files using strategy '{strategy}'")
 
         return unique_list, removed_list
 
-    def get_duplicate_report(
-        self, metadata_list: List[Dict[str, str]]
-    ) -> str:
+    def get_duplicate_report(self, metadata_list: List[Dict[str, str]]) -> str:
         """
         Generate a human-readable report of duplicates.
 
