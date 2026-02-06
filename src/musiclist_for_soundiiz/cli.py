@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Command-line interface for MusicList for Soundiiz."""
 
 import argparse
@@ -84,7 +85,10 @@ Supported audio formats:
         "--input",
         nargs="+",
         required=True,
-        help="Path(s) to music directory/directories to scan (supports multiple directories for batch processing)",
+        help=(
+            "Path(s) to music directory/directories to scan "
+            "(supports multiple directories for batch processing)"
+        ),
     )
     io_group.add_argument(
         "-o",
@@ -289,11 +293,14 @@ def main(argv: Optional[list] = None) -> int:
 
         # Export metadata
         logger.info(
-            f"Exporting {len(metadata_to_export)} songs to {args.format.upper()} format: {args.output}"
+            "Exporting %s songs to %s format: %s",
+            len(metadata_to_export),
+            args.format.upper(),
+            args.output,
         )
         exporter.export(metadata_to_export, args.output)
 
-        logger.info("✓ Export completed successfully!")
+        logger.info("Export completed successfully.")
         return 0
 
     except KeyboardInterrupt:

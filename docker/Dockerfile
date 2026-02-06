@@ -1,46 +1,38 @@
 # MusicList for Soundiiz - Docker Image
 FROM python:3.11-slim
 
-# Set working directory
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+ENV UV_PROJECT_ENVIRONMENT=.venv
+ENV PATH="/app/.venv/bin:/root/.local/bin:/root/.cargo/bin:${PATH}"
+
 WORKDIR /app
 
-# Install system dependencies for audio file processing
-RUN apt-get update && apt-get install -y \
-    --no-install-recommends \
+# Install system dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl \
     libmagic1 \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy requirements first for better caching
-COPY requirements.txt .
+# Install uv
+RUN curl -LsSf https://astral.sh/uv/install.sh | sh
 
-# Install Python dependencies
-RUN pip install --no-cache-dir -r requirements.txt
-
-# Copy application code
+# Copy project files
+COPY pyproject.toml uv.lock README.md LICENSE ./
 COPY src/ ./src/
-COPY setup.py .
-COPY README.md .
-COPY LICENSE .
+COPY scripts/ ./scripts/
+COPY docker/entrypoint.sh /app/entrypoint.sh
 
-# Install the package
-RUN pip install --no-cache-dir -e .
+# Set up environment and install dependencies
+RUN uv venv \
+    && uv sync --frozen --no-dev
 
-# Create mount point for music directory
-VOLUME ["/music"]
+RUN chmod +x /app/entrypoint.sh
 
-# Create mount point for output directory
-VOLUME ["/output"]
+# Create mount points
+VOLUME ["/music", "/output"]
 
-# Set default output directory
 ENV OUTPUT_DIR=/output
 
-# Default command (can be overridden)
-ENTRYPOINT ["musiclist-for-soundiiz"]
-
-# Default arguments
+ENTRYPOINT ["/app/entrypoint.sh"]
 CMD ["--help"]
-
-# Labels
-LABEL maintainer="lucmuss"
-LABEL description="Extract music metadata for Soundiiz import"
-LABEL version="1.0.0"

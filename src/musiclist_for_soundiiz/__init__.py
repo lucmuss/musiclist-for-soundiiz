@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """MusicList for Soundiiz - Extract music file metadata for Soundiiz import."""
 
 __version__ = "1.0.8"

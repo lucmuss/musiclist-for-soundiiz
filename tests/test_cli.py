@@ -1,7 +1,6 @@
+# -*- coding: utf-8 -*-
 """Tests for CLI functionality."""
 
-import os
-import tempfile
 from pathlib import Path
 
 import pytest

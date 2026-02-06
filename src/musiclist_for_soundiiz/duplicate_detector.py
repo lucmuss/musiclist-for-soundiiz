@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Duplicate detection for music files."""
 
 import logging
@@ -136,7 +137,7 @@ class DuplicateDetector:
 
         lines = [f"Found {len(duplicates)} duplicate song groups:\n"]
 
-        for i, (key, entries) in enumerate(sorted(duplicates.items()), 1):
+        for i, (_key, entries) in enumerate(sorted(duplicates.items()), 1):
             # Get title and artist from first entry
             title = entries[0].get("title", "Unknown")
             artist = entries[0].get("artist", "Unknown")

@@ -144,8 +144,8 @@ output*.csv
 output*.json
 output*.m3u
 output*.txt
-ausgabe_*.csv
 musiclist_for_soundiiz.txt
 test_output/
 demo_export.csv
 legacy_original_script.py
+.cline/

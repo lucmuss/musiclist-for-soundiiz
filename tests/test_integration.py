@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Integration tests using real audio files."""
 
 from pathlib import Path
@@ -199,7 +200,7 @@ class TestEndToEndWorkflow:
         return Path(__file__).parent / "fixtures" / "music"
 
     def test_full_csv_export_workflow(self, fixtures_dir, tmp_path):
-        """Test complete workflow: scan → extract → export to CSV."""
+        """Test complete workflow: scan -> extract -> export to CSV."""
         if not fixtures_dir.exists():
             pytest.skip(f"Fixtures directory not found: {fixtures_dir}")
 
@@ -224,7 +225,7 @@ class TestEndToEndWorkflow:
         assert "Loneliness" in content or "Tomcraft" in content
 
     def test_full_json_export_workflow(self, fixtures_dir, tmp_path):
-        """Test complete workflow: scan → extract → export to JSON."""
+        """Test complete workflow: scan -> extract -> export to JSON."""
         if not fixtures_dir.exists():
             pytest.skip(f"Fixtures directory not found: {fixtures_dir}")
 

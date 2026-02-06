@@ -1,6 +1,5 @@
+# -*- coding: utf-8 -*-
 """Tests for music file metadata extraction."""
-
-from pathlib import Path
 
 import pytest
 
@@ -17,9 +16,9 @@ class TestMusicFileExtractor:
         required_formats = {".aac", ".au", ".flac", ".mp3", ".ogg"}
 
         for fmt in required_formats:
-            assert fmt in extractor.SUPPORTED_EXTENSIONS, (
-                f"Format {fmt} should be in SUPPORTED_EXTENSIONS"
-            )
+            assert (
+                fmt in extractor.SUPPORTED_EXTENSIONS
+            ), f"Format {fmt} should be in SUPPORTED_EXTENSIONS"
 
     def test_extractor_with_custom_extensions(self):
         """Test extractor initialization with custom extensions."""

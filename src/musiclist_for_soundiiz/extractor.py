@@ -1,8 +1,9 @@
+# -*- coding: utf-8 -*-
 """Music file metadata extraction."""
 
 import logging
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Mapping, Optional, Tuple
 
 from mutagen import File as MutagenFile
 
@@ -68,11 +69,7 @@ class MusicFileExtractor:
         music_files = []
 
         try:
-            if recursive:
-                pattern = "**/*"
-            else:
-                pattern = "*"
-
+            pattern = "**/*" if recursive else "*"
             for file_path in dir_path.glob(pattern):
                 # Skip macOS resource fork files and hidden files
                 if file_path.name.startswith("._") or file_path.name.startswith("."):
@@ -82,7 +79,6 @@ class MusicFileExtractor:
                 if file_path.is_file() and file_path.suffix.lower() in self.extensions:
                     music_files.append(file_path)
                     logger.debug(f"Found music file: {file_path}")
-
         except PermissionError as e:
             logger.error(f"Permission denied accessing directory: {e}")
             raise
@@ -181,7 +177,7 @@ class MusicFileExtractor:
         return metadata_list
 
     @staticmethod
-    def _safe_get_first(audio, keys: List[str]) -> Optional[str]:
+    def _safe_get_first(audio: Mapping[str, List[Any]], keys: List[str]) -> Optional[str]:
         """
         Get first non-empty value from audio tags.
 
@@ -196,8 +192,12 @@ class MusicFileExtractor:
             if key in audio and audio[key]:
                 value = audio[key][0]
                 if isinstance(value, bytes):
-                    value = value.decode("utf-8", errors="ignore")
-                value_stripped = value.strip()
+                    value_str = value.decode("utf-8", errors="ignore")
+                elif isinstance(value, str):
+                    value_str = value
+                else:
+                    value_str = str(value)
+                value_stripped = value_str.strip()
                 if value_stripped:
                     return value_stripped
         return None

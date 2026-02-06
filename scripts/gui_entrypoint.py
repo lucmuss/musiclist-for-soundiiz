@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 """Entry point wrapper for GUI PyInstaller builds."""
 
 import sys
+
 from musiclist_for_soundiiz.gui import main
 
 if __name__ == "__main__":

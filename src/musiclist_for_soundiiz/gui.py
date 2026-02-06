@@ -1,17 +1,15 @@
-"""Graphical User Interface for MusicList for Soundiiz with i18n support."""
+# -*- coding: utf-8 -*-
+"""Graphical User Interface for MusicList for Soundiiz."""
 
-import os
-import sys
 import threading
 import tkinter as tk
-from pathlib import Path
 from tkinter import filedialog, messagebox, ttk
-from typing import List, Optional
+from typing import List
 
 from .duplicate_detector import DuplicateDetector
 from .exporter import get_exporter
 from .extractor import MusicFileExtractor
-from .i18n import LANGUAGE_NAMES, I18n
+from .i18n import I18n
 
 
 class MusicListGUI:
@@ -24,7 +22,7 @@ class MusicListGUI:
         self.root.resizable(True, True)
 
         # Initialize i18n
-        self.i18n = I18n("en")  # Default language
+        self.i18n = I18n("en")
 
         # Variables
         self.input_dirs: List[str] = []
@@ -35,7 +33,6 @@ class MusicListGUI:
         self.remove_duplicates = tk.BooleanVar(value=False)
         self.duplicate_strategy = tk.StringVar(value="keep_first")
         self.max_songs_per_file = tk.IntVar(value=200)
-        self.current_language = tk.StringVar(value="en")
         self.processing = False
 
         # Setup UI
@@ -50,7 +47,7 @@ class MusicListGUI:
 
         # Title and subtitle
         self.title_label = ttk.Label(
-            title_frame, text="🎵 MusicList for Soundiiz", font=("Arial", 20, "bold")
+            title_frame, text="MusicList for Soundiiz", font=("Arial", 20, "bold")
         )
         self.title_label.pack()
 
@@ -58,27 +55,6 @@ class MusicListGUI:
             title_frame, text="Extract music metadata and create playlists", font=("Arial", 10)
         )
         self.subtitle_label.pack()
-
-        # Language selector
-        lang_frame = ttk.Frame(title_frame)
-        lang_frame.pack(pady=(5, 0))
-
-        self.lang_label = ttk.Label(lang_frame, text="Language:")
-        self.lang_label.pack(side=tk.LEFT, padx=(0, 5))
-
-        lang_combo = ttk.Combobox(
-            lang_frame,
-            textvariable=self.current_language,
-            values=list(LANGUAGE_NAMES.keys()),
-            state="readonly",
-            width=15,
-        )
-        lang_combo.pack(side=tk.LEFT)
-        lang_combo.bind("<<ComboboxSelected>>", self._change_language)
-
-        # Format display names
-        def format_func(code):
-            return LANGUAGE_NAMES.get(code, code)
 
         # Main container
         main_frame = ttk.Frame(self.root, padding="10")
@@ -104,7 +80,7 @@ class MusicListGUI:
 
     def _create_input_section(self, parent):
         """Create input directories section."""
-        self.input_frame = ttk.LabelFrame(parent, text="📁 Input Directories", padding="10")
+        self.input_frame = ttk.LabelFrame(parent, text="Input Directories", padding="10")
         self.input_frame.pack(fill=tk.BOTH, expand=True, pady=(0, 10))
 
         # Listbox with scrollbar
@@ -123,7 +99,7 @@ class MusicListGUI:
         # Hint label
         self.hint_label = ttk.Label(
             self.input_frame,
-            text="💡 Tip: Click 'Add Directory' or drag folders here",
+            text="Tip: Click 'Add Directory' or drag folders here",
             font=("Arial", 9, "italic"),
             foreground="gray",
         )
@@ -146,7 +122,7 @@ class MusicListGUI:
 
     def _create_output_section(self, parent):
         """Create output file section."""
-        self.output_frame = ttk.LabelFrame(parent, text="📄 Output", padding="10")
+        self.output_frame = ttk.LabelFrame(parent, text="Output", padding="10")
         self.output_frame.pack(fill=tk.X, pady=(0, 10))
 
         # Output file
@@ -188,7 +164,7 @@ class MusicListGUI:
 
     def _create_options_section(self, parent):
         """Create options section."""
-        self.options_frame = ttk.LabelFrame(parent, text="⚙️ Options", padding="10")
+        self.options_frame = ttk.LabelFrame(parent, text="Options", padding="10")
         self.options_frame.pack(fill=tk.X, pady=(0, 10))
 
         # Recursive scanning
@@ -233,7 +209,7 @@ class MusicListGUI:
 
     def _create_progress_section(self, parent):
         """Create progress section."""
-        self.progress_frame = ttk.LabelFrame(parent, text="📊 Progress", padding="10")
+        self.progress_frame = ttk.LabelFrame(parent, text="Progress", padding="10")
         self.progress_frame.pack(fill=tk.X, pady=(0, 10))
 
         self.status_label = ttk.Label(self.progress_frame, text="Ready")
@@ -261,9 +237,7 @@ class MusicListGUI:
         btn_frame = ttk.Frame(parent)
         btn_frame.pack(fill=tk.X, pady=(10, 0))
 
-        self.process_btn = ttk.Button(
-            btn_frame, text="🚀 Process Files", command=self._process_files
-        )
+        self.process_btn = ttk.Button(btn_frame, text="Process Files", command=self._process_files)
         self.process_btn.pack(side=tk.LEFT, padx=(0, 5))
 
         self.clear_log_btn = ttk.Button(btn_frame, text="Clear Log", command=self._clear_log)
@@ -282,18 +256,13 @@ class MusicListGUI:
         )
         self.status_bar.pack(side=tk.BOTTOM, fill=tk.X)
 
-    def _change_language(self, event=None):
-        """Change application language."""
-        self.i18n.set_language(self.current_language.get())
-        self._update_texts()
-
     def _update_texts(self):
         """Update all UI texts according to current language."""
         _ = self.i18n
 
         # Window title
         self.root.title(_.get("window_title"))
-        self.title_label.config(text="🎵 " + _.get("window_title"))
+        self.title_label.config(text=_.get("window_title"))
         self.subtitle_label.config(text=_.get("subtitle"))
 
         # Sections
@@ -325,8 +294,6 @@ class MusicListGUI:
         self.clear_log_btn.config(text=_.get("clear_log"))
         self.help_btn.config(text=_.get("help"))
         self.about_btn.config(text=_.get("about"))
-        self.lang_label.config(text=_.get("language"))
-
         # Status
         if not self.processing:
             self.status_label.config(text=_.get("ready"))
@@ -521,7 +488,7 @@ class MusicListGUI:
             )
 
         except Exception as e:
-            self._log(f"❌ {_.get('error')}: {str(e)}")
+            self._log(f"{_.get('error')}: {str(e)}")
             self._update_status(_.get("error_occurred"))
             messagebox.showerror(_.get("error"), _.get("error_message", error=str(e)))
 
@@ -547,7 +514,7 @@ class MusicListGUI:
 def main():
     """Main entry point for GUI."""
     root = tk.Tk()
-    app = MusicListGUI(root)
+    MusicListGUI(root)
     root.mainloop()
 
 

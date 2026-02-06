@@ -25,6 +25,7 @@ ENV/
 # Git
 .git/
 .gitignore
+.cline/
 
 # Testing
 .pytest_cache/
@@ -48,13 +49,8 @@ test_output.csv
 # Music directory
 music/
 
-# Documentation (optional, keep only README)
-CONTRIBUTING.md
-FONTS_INSTALLATION.md
-GUI_INSTALLATION.md
-GUI_QUICKSTART.md
-ROADMAP.md
-DOCKER.md
+# Documentation
+docs/
 
 # CI/CD
 .github/

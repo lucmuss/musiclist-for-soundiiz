@@ -1,10 +1,11 @@
+# -*- coding: utf-8 -*-
 """Export music metadata to various formats."""
 
 import json
 import logging
 from abc import ABC, abstractmethod
 from pathlib import Path
-from typing import Dict, List
+from typing import Dict, List, Type
 
 logger = logging.getLogger(__name__)
 
@@ -324,7 +325,7 @@ def get_exporter(format_type: str, **kwargs) -> BaseExporter:
     """
     format_type = format_type.lower()
 
-    exporters = {
+    exporters: Dict[str, Type[BaseExporter]] = {
         "csv": CSVExporter,
         "json": JSONExporter,
         "m3u": M3UExporter,

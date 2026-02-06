@@ -1,0 +1,26 @@
+name: CI Typecheck
+
+on:
+  workflow_call:
+
+jobs:
+  typecheck:
+    runs-on: ubuntu-latest
+    container:
+      image: python:3.11-slim
+    env:
+      UV_PROJECT_ENVIRONMENT: .venv
+    steps:
+      - name: Install system dependencies
+        run: apt-get update && apt-get install -y --no-install-recommends git
+      - uses: actions/checkout@v4
+      - name: Install uv
+        uses: astral-sh/setup-uv@v1
+        with:
+          version: "latest"
+      - name: Sync dependencies
+        run: |
+          uv venv
+          uv sync --extra dev --frozen
+      - name: MyPy
+        run: uv run mypy src

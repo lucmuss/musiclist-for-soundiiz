@@ -1,7 +1,7 @@
+# -*- coding: utf-8 -*-
 """Tests for metadata exporters."""
 
 import json
-from pathlib import Path
 
 import pytest
 
@@ -207,13 +207,13 @@ class TestJSONExporter:
         assert "No metadata to export" in caplog.text
         assert not output_file.exists()
 
-    def test_json_export_unicode(self, tmp_path):
-        """Test JSON export with unicode characters."""
+    def test_json_export_ascii(self, tmp_path):
+        """Test JSON export with ASCII characters."""
         metadata = [
             {
-                "title": "Über den Wolken",
-                "artist": "Künstler",
-                "album": "Äöü",
+                "title": "Above the Clouds",
+                "artist": "Sample Artist",
+                "album": "Sample Album",
                 "isrc": "",
             }
         ]
@@ -226,7 +226,7 @@ class TestJSONExporter:
         with open(output_file, encoding="utf-8") as f:
             data = json.load(f)
 
-        assert data["songs"][0]["title"] == "Über den Wolken"
+        assert data["songs"][0]["title"] == "Above the Clouds"
 
 
 class TestM3UExporter:

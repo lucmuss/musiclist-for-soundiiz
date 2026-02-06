@@ -71,7 +71,7 @@ where = ["src"]
 [tool.ruff]
 line-length = 100
 target-version = "py38"
-src = ["src", "tests"]
+src = ["src", "tests", "scripts"]
 
 [tool.ruff.lint]
 select = [
@@ -86,7 +86,7 @@ select = [
     "C4",   # flake8-comprehensions
     "SIM",  # flake8-simplify
 ]
-ignore = ["E203", "E501", "E402", "F401"]
+ignore = ["E203", "E501", "E402", "F401", "UP009"]
 
 [tool.ruff.lint.per-file-ignores]
 "__init__.py" = ["F401"]
@@ -104,12 +104,17 @@ python_classes = "Test*"
 python_functions = "test_*"
 
 [tool.mypy]
+python_version = "3.11"
 warn_return_any = true
 warn_unused_configs = true
 disallow_untyped_defs = false
 disallow_incomplete_defs = false
 namespace_packages = true
 explicit_package_bases = true
+
+[tool.black]
+line-length = 100
+target-version = ["py311"]
 
 [[tool.mypy.overrides]]
 module = [

@@ -1,7 +1,6 @@
 # Include important documentation files
 include README.md
 include LICENSE
-include DOCKER.md
 
 # Include documentation directory
 recursive-include docs *.md
@@ -11,6 +10,9 @@ recursive-include docs *.jpg
 # Include examples
 recursive-include examples *.sh
 recursive-include examples *.py
+
+# Include scripts
+recursive-include scripts *.py
 
 # Include configuration files
 include pyproject.toml
