@@ -30,6 +30,9 @@ jobs:
     needs: build
     if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.publish_target == 'pypi')
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
     steps:
       - name: Download build artifacts
         uses: actions/download-artifact@v4
@@ -45,6 +48,9 @@ jobs:
     needs: build
     if: github.event_name == 'workflow_dispatch' && inputs.publish_target == 'testpypi'
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
     steps:
       - name: Download build artifacts
         uses: actions/download-artifact@v4
