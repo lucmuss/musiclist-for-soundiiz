@@ -1,6 +1,7 @@
 # Docker Guide
 
 The Docker image runs the CLI using uv inside the container.
+Startup is centralized through `scripts/bootstrap.sh` (called by `docker/entrypoint.sh`).
 
 ## Build
 

@@ -9,9 +9,17 @@ setup:
     uv sync --extra dev
     cp -n .env.example .env || true
 
+# Loads .env (if present) and prints bootstrap debug info when enabled
+bootstrap-env:
+    bash scripts/bootstrap.sh env
+
+# Canonical startup path for local runs
+bootstrap-run:
+    bash scripts/bootstrap.sh run ${ARGS:-"--help"}
+
 # Starts dev environment (fast prototyping)
 dev:
-    bash docker/entrypoint.sh
+    @just bootstrap-run
 
 # Formats code (Black + Ruff)
 format:

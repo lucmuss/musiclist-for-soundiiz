@@ -1,7 +1,4 @@
-#!/usr/bin/env sh
-set -e
+#!/usr/bin/env bash
+set -euo pipefail
 
-echo "Starting MusicList for Soundiiz..."
-
-# Run the CLI application using uv
-exec uv run python -m musiclist_for_soundiiz.cli "$@"
+exec /app/scripts/bootstrap.sh run "$@"

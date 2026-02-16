@@ -27,7 +27,7 @@ COPY docker/entrypoint.sh /app/entrypoint.sh
 RUN uv venv \
     && uv sync --frozen --no-dev
 
-RUN chmod +x /app/entrypoint.sh
+RUN chmod +x /app/entrypoint.sh /app/scripts/bootstrap.sh
 
 # Create mount points
 VOLUME ["/music", "/output"]

@@ -13,6 +13,7 @@ recursive-include examples *.py
 
 # Include scripts
 recursive-include scripts *.py
+recursive-include scripts *.sh
 
 # Include configuration files
 include pyproject.toml

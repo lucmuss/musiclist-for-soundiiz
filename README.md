@@ -73,12 +73,16 @@ This project uses uv, ruff, black, flake8, mypy, and pytest. The Justfile provid
 
 ```bash
 just setup
+just bootstrap-env
+ARGS='-i /path/to/music -o output.csv' just bootstrap-run
 just format
 just lint
 just typecheck
 just test
 just ci
 ```
+
+`just dev` delegates to `just bootstrap-run`.
 
 ## Documentation
 

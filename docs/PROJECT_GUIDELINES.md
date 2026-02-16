@@ -11,6 +11,12 @@ This document summarizes the repository structure, tooling, and workflows.
 - `examples/` for usage examples
 - `docker/` for Docker assets
 
+Canonical startup path:
+
+- `scripts/bootstrap.sh` is the single source of truth for startup/env loading
+- `docker/entrypoint.sh` calls `scripts/bootstrap.sh`
+- `just dev` delegates to `scripts/bootstrap.sh`
+
 ## Tooling
 
 - uv for environments and dependencies
@@ -27,7 +33,7 @@ GitHub Actions workflows live in `.github/workflows/`:
 - `ci.yml` orchestrates lint, typecheck, tests, and build
 - `ci-lint.yml` runs lint checks
 - `ci-typecheck.yml` runs mypy
-- `ci-tests.yml` runs tests on Linux, macOS, and Windows
+- `ci-tests.yml` runs tests on Ubuntu with Python 3.12
 - `ci-build.yml` builds distribution packages
 - `ci-binary.yml` builds binaries
 - `build-binaries.yml` triggers binary builds on tags
