@@ -21,16 +21,15 @@ bootstrap-run:
 dev:
     @just bootstrap-run
 
-# Formats code (Black + Ruff)
+# Formats code (Ruff)
 format:
-    uv run --with black black src tests scripts
+    uv run ruff format src tests scripts
     uv run ruff check --fix src tests scripts
 
 # Checks code quality (read-only)
 lint:
     uv run ruff check src tests scripts
-    uv run --with black black --check src tests scripts
-    uv run --with flake8 flake8 src tests scripts
+    uv run ruff format --check src tests scripts
 
 # Type-checking
 typecheck:

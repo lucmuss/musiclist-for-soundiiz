@@ -69,7 +69,7 @@ musiclist-for-soundiiz-gui
 
 ## Development
 
-This project uses uv, ruff, black, flake8, mypy, and pytest. The Justfile provides common tasks.
+This project uses uv, ruff, mypy, and pytest. The Justfile provides common tasks.
 
 ```bash
 just setup
