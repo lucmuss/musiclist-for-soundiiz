@@ -31,13 +31,13 @@ log_debug() {
 load_env() {
     local env_file="$REPO_ROOT/.env"
     if [[ -f "$env_file" ]]; then
-        log_debug "Lade Umgebungsvariablen aus $env_file"
+        log_debug "Loading environment variables from $env_file"
         set -a
         # shellcheck disable=SC1090
         source "$env_file"
         set +a
     else
-        log_debug "Keine .env gefunden, nutze bestehende System-Umgebung"
+        log_debug "No .env found, using existing system environment"
     fi
 }
 
