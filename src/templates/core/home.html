@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %}Home - MusicList for Soundiiz{% endblock %}
+
+{% block content %}
+<div class="hero">
+    <h1>🎵 MusicList for Soundiiz</h1>
+    <p class="subtitle">Scan your music library and create playlists for Soundiiz import</p>
+</div>
+
+<div class="feature-grid">
+    <div class="feature-card">
+        <div class="feature-icon">📁</div>
+        <h3>Scan Music</h3>
+        <p>Scan your local music directories and extract metadata from MP3, FLAC, M4A, OGG, and more.</p>
+        <a href="{% url 'scanner:scan_upload' %}" class="btn btn-primary">Start Scanning</a>
+    </div>
+
+    <div class="feature-card">
+        <div class="feature-icon">📝</div>
+        <h3>Create Playlists</h3>
+        <p>Build custom playlists from your scanned music files. Organize by artist, album, or genre.</p>
+        <a href="{% url 'playlists:playlist_list' %}" class="btn btn-primary">View Playlists</a>
+    </div>
+
+    <div class="feature-card">
+        <div class="feature-icon">📤</div>
+        <h3>Export</h3>
+        <p>Export playlists to CSV (Soundiiz), JSON, M3U, or TXT format.</p>
+        <a href="{% url 'exports:export_list' %}" class="btn btn-primary">View Exports</a>
+    </div>
+</div>
+
+<div class="quick-actions">
+    <h2>Quick Actions</h2>
+    <div class="action-buttons">
+        <a href="{% url 'scanner:scan_upload' %}" class="btn btn-large">
+            <span class="btn-icon">📂</span>
+            New Scan
+        </a>
+        <a href="{% url 'playlists:playlist_create' %}" class="btn btn-large">
+            <span class="btn-icon">➕</span>
+            New Playlist
+        </a>
+    </div>
+</div>
+{% endblock %}

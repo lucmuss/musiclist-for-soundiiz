@@ -38,6 +38,36 @@ classifiers = [
 
 dependencies = [
     "mutagen>=1.45.0",
+    "Django>=5.0,<5.1",
+    "psycopg2-binary>=2.9.0",
+    "python-dotenv>=1.0.0",
+    "whitenoise>=6.6.0",
+    "gunicorn>=21.0.0",
+    "uvicorn>=0.24.0",
+    "redis>=5.0.0",
+    "django-redis>=5.4.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "pytest-django>=4.7.0",
+    "ruff>=0.1.0",
+    "mypy>=0.990",
+    "build>=0.10.0",
+    "twine>=4.0.0",
+    "pre-commit>=3.0.0",
+]
+web = [
+    "django-htmx>=1.17.0",
+    "django-compressor>=4.4",
+]
+
+dev-web = [
+    "pytest-playwright>=0.4.0",
+    "playwright>=1.40.0",
+    "django-debug-toolbar>=4.2.0",
 ]
 
 [project.optional-dependencies]
@@ -61,6 +91,7 @@ Changelog = "https://github.com/lucmuss/musiclist-for-soundiiz/releases"
 [project.scripts]
 musiclist-for-soundiiz = "musiclist_for_soundiiz.cli:main"
 musiclist-for-soundiiz-gui = "musiclist_for_soundiiz.gui:main"
+musiclist-for-soundiiz-web = "musiclist_for_soundiiz.web:main"
 
 [tool.setuptools]
 package-dir = {"" = "src"}

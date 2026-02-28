@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block title %}Export {{ playlist.name }} - MusicList{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>📤 Export Playlist</h1>
+    <p class="subtitle">{{ playlist.name }} ({{ playlist.total_tracks }} tracks)</p>
+</div>
+
+<div class="export-options">
+    <form method="post" class="export-form">
+        {% csrf_token %}
+
+        <h2>Select Export Format</h2>
+
+        <div class="format-grid">
+            <label class="format-card">
+                <input type="radio" name="format_type" value="csv" checked>
+                <div class="format-content">
+                    <div class="format-icon">📊</div>
+                    <h3>CSV</h3>
+                    <p>Soundiiz compatible format<br>title,artist,album,isrc,</p>
+                </div>
+            </label>
+
+            <label class="format-card">
+                <input type="radio" name="format_type" value="json">
+                <div class="format-content">
+                    <div class="format-icon">📄</div>
+                    <h3>JSON</h3>
+                    <p>Structured JSON format<br>Full metadata included</p>
+                </div>
+            </label>
+
+            <label class="format-card">
+                <input type="radio" name="format_type" value="m3u">
+                <div class="format-content">
+                    <div class="format-icon">🎵</div>
+                    <h3>M3U</h3>
+                    <p>Playlist file format<br>Compatible with most players</p>
+                </div>
+            </label>
+
+            <label class="format-card">
+                <input type="radio" name="format_type" value="txt">
+                <div class="format-content">
+                    <div class="format-icon">📝</div>
+                    <h3>TXT</h3>
+                    <p>Simple text format<br>Title - Artist per line</p>
+                </div>
+            </label>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary btn-large">
+                <span class="btn-icon">📤</span>
+                Export Playlist
+            </button>
+            <a href="{% url 'playlists:playlist_detail' playlist.pk %}" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

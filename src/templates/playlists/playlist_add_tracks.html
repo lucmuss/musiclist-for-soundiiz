@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+
+{% block title %}Add Tracks - {{ playlist.name }} - MusicList{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>➕ Add Tracks to {{ playlist.name }}</h1>
+    <div class="header-actions">
+        <a href="{% url 'playlists:playlist_detail' playlist.pk %}" class="btn btn-secondary">← Back to Playlist</a>
+    </div>
+</div>
+
+<div class="search-form">
+    <form method="get" class="search-bar">
+        <input type="text" name="q" value="{{ search_query }}" placeholder="Search by title, artist, or album..." class="form-control">
+        <button type="submit" class="btn btn-primary">Search</button>
+        {% if search_query %}
+            <a href="?" class="btn btn-secondary">Clear</a>
+        {% endif %}
+    </form>
+</div>
+
+{% if page_obj.object_list %}
+    <form method="post" class="track-selection-form">
+        {% csrf_token %}
+
+        <div class="bulk-actions">
+            <button type="submit" class="btn btn-primary">
+                <span class="btn-icon">➕</span>
+                Add Selected Tracks
+            </button>
+        </div>
+
+        <div class="table-container">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th class="checkbox-col">
+                            <input type="checkbox" id="select-all" onchange="toggleAll(this)">
+                        </th>
+                        <th>Title</th>
+                        <th>Artist</th>
+                        <th>Album</th>
+                        <th>Duration</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for file in page_obj.object_list %}
+                    <tr>
+                        <td class="checkbox-col">
+                            <input type="checkbox" name="music_files" value="{{ file.pk }}" class="track-checkbox">
+                        </td>
+                        <td>{{ file.title|default:file.filename }}</td>
+                        <td>{{ file.artist|default:"-" }}</td>
+                        <td>{{ file.album|default:"-" }}</td>
+                        <td>{{ file.duration_formatted }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="bulk-actions">
+            <button type="submit" class="btn btn-primary">
+                <span class="btn-icon">➕</span>
+                Add Selected Tracks
+            </button>
+        </div>
+    </form>
+
+    {% if page_obj.has_other_pages %}
+        <div class="pagination">
+            {% if page_obj.has_previous %}
+                <a href="?page={{ page_obj.previous_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}" class="btn btn-small">← Previous</a>
+            {% endif %}
+            <span class="page-info">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}" class="btn btn-small">Next →</a>
+            {% endif %}
+        </div>
+    {% endif %}
+{% else %}
+    <div class="empty-state">
+        <div class="empty-icon">🔍</div>
+        <h3>No tracks found</h3>
+        {% if search_query %}
+            <p>No tracks matching "{{ search_query }}".</p>
+            <a href="?" class="btn btn-secondary">Clear Search</a>
+        {% else %}
+            <p>All available tracks are already in this playlist.</p>
+        {% endif %}
+    </div>
+{% endif %}
+
+<script>
+function toggleAll(source) {
+    const checkboxes = document.querySelectorAll('.track-checkbox');
+    checkboxes.forEach(cb => cb.checked = source.checked);
+}
+</script>
+{% endblock %}

@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block title %}Scan Sessions - MusicList{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>📋 Scan Sessions</h1>
+    <div class="header-actions">
+        <a href="{% url 'scanner:scan_upload' %}" class="btn btn-primary">
+            <span class="btn-icon">➕</span>
+            New Scan
+        </a>
+    </div>
+</div>
+
+{% if page_obj.object_list %}
+    <div class="table-container">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Session</th>
+                    <th>Source</th>
+                    <th>Status</th>
+                    <th>Files</th>
+                    <th>Created</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for scan in page_obj.object_list %}
+                <tr>
+                    <td>
+                        <a href="{% url 'scanner:scan_detail' scan.pk %}">
+                            {{ scan.name|default:"Unnamed Scan" }}
+                        </a>
+                    </td>
+                    <td class="truncate" title="{{ scan.source_path }}">{{ scan.source_path }}</td>
+                    <td>
+                        <span class="status-badge status-{{ scan.status }}">
+                            {{ scan.get_status_display }}
+                        </span>
+                    </td>
+                    <td>
+                        {{ scan.total_files_processed }} / {{ scan.total_files_found }}
+                    </td>
+                    <td>{{ scan.created_at|date:"Y-m-d H:i" }}</td>
+                    <td>
+                        <a href="{% url 'scanner:scan_detail' scan.pk %}" class="btn btn-small">View</a>
+                        <form method="post" action="{% url 'scanner:scan_delete' scan.pk %}" class="inline-form" onsubmit="return confirm('Are you sure you want to delete this scan?');">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-small btn-danger">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {% if page_obj.has_other_pages %}
+        <div class="pagination">
+            {% if page_obj.has_previous %}
+                <a href="?page={{ page_obj.previous_page_number }}" class="btn btn-small">← Previous</a>
+            {% endif %}
+            <span class="page-info">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}" class="btn btn-small">Next →</a>
+            {% endif %}
+        </div>
+    {% endif %}
+{% else %}
+    <div class="empty-state">
+        <div class="empty-icon">📂</div>
+        <h3>No scan sessions yet</h3>
+        <p>Start by scanning a music directory to extract metadata.</p>
+        <a href="{% url 'scanner:scan_upload' %}" class="btn btn-primary">Start First Scan</a>
+    </div>
+{% endif %}
+{% endblock %}

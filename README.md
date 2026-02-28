@@ -5,15 +5,41 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Code style: ruff](https://img.shields.io/badge/code%20style-ruff-000000.svg)](https://github.com/astral-sh/ruff)
 
-Command-line and GUI tool for extracting music file metadata and creating playlists for Soundiiz import.
+Command-line, GUI, and **Web** tool for extracting music file metadata and creating playlists for Soundiiz import.
 
 ## Features
 
-- Multi-format support: AAC, AU, FLAC, MP3, OGG, M4A, WAV, WMA
-- Export formats: CSV (Soundiiz), JSON, M3U, TXT
-- Recursive scanning and batch processing
-- Duplicate detection and optional removal
-- CLI and GUI interfaces
+- **Multi-format support**: AAC, AU, FLAC, MP3, OGG, M4A, WAV, WMA
+- **Export formats**: CSV (Soundiiz), JSON, M3U, TXT
+- **Recursive scanning** and batch processing
+- **Duplicate detection** and optional removal
+- **Three interfaces**: CLI, GUI, and Web (NEW!)
+- **Web Features**: User accounts, playlist management, drag & drop upload
+- **Modern Web UI**: HTMX-powered, responsive design
+
+## Quick Start
+
+### CLI (Command Line)
+```bash
+musiclist-for-soundiiz -i /music/library -o soundiiz.csv
+```
+
+### GUI (Desktop)
+```bash
+musiclist-for-soundiiz-gui
+```
+
+### Web Interface (NEW!)
+```bash
+# Setup and start
+just setup-web
+just web-migrate
+just web-dev
+
+# Or use entrypoint directly
+musiclist-for-soundiiz-web
+```
+Then open http://localhost:8000
 
 ## Installation
 
@@ -67,10 +93,55 @@ musiclist-for-soundiiz -i /music -o playlist.txt -f txt
 musiclist-for-soundiiz-gui
 ```
 
+### Web Interface 🌐
+
+The web interface provides a modern, browser-based way to manage your music library and create playlists.
+
+**Features:**
+- Drag & drop music directory upload
+- Automatic metadata extraction
+- Playlist creation and management
+- Export to all formats (CSV, JSON, M3U, TXT)
+- User accounts with history
+- Responsive design for mobile and desktop
+
+**Quick Start:**
+```bash
+# 1. Setup web environment
+just setup-web
+
+# 2. Initialize database
+just web-migrate
+
+# 3. Create admin user (optional)
+just web-createsuperuser
+
+# 4. Start development server
+just web-dev
+```
+
+**Production Deployment:**
+```bash
+# With Docker (includes PostgreSQL)
+just docker-web-up
+
+# Or manually
+just web-production
+```
+
+**Entrypoint Options:**
+```bash
+musiclist-for-soundiiz-web                    # Development server
+musiclist-for-soundiiz-web --port 8080       # Custom port
+musiclist-for-soundiiz-web --production      # Production with gunicorn
+musiclist-for-soundiiz-web --migrate         # Run migrations first
+```
+
 ## Development
 
 This project uses uv, ruff, mypy, and pytest. The Justfile provides common tasks.
 
+### CLI/GUI Development
 ```bash
 just setup
 just bootstrap-env
@@ -82,7 +153,24 @@ just test
 just ci
 ```
 
+### Web Development
+```bash
+just setup-web      # Install web dependencies
+just web-migrate    # Setup database
+just web-dev        # Start development server
+just web-test       # Run web tests
+just web-test-cov   # Run tests with coverage
+```
+
 `just dev` delegates to `just bootstrap-run`.
+
+### Available Just Commands
+- `just setup` - Setup CLI environment
+- `just setup-web` - Setup web environment
+- `just web-dev` - Start web development server
+- `just web-test` - Run web tests
+- `just docker-web-up` - Start web with Docker
+- `just ci` - Full CI pipeline
 
 ## Documentation
 

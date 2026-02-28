@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}MusicList for Soundiiz{% endblock %}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <script src="https://unpkg.com/htmx.org@1.9.10" integrity="sha384-D1Kt99CQMDuVetoL1lrYwg5t+9QdHe7NLX/SoJYkXDFfX37iInKRy5xLSi8nO7UC" crossorigin="anonymous"></script>
+</head>
+<body>
+    <header class="navbar">
+        <div class="container">
+            <a href="{% url 'core:home' %}" class="logo">
+                <span class="logo-icon">🎵</span>
+                MusicList
+            </a>
+            <nav class="nav-links">
+                <a href="{% url 'core:home' %}" class="{% if request.resolver_match.url_name == 'home' %}active{% endif %}">Home</a>
+                <a href="{% url 'scanner:scan_list' %}" class="{% if request.resolver_match.namespace == 'scanner' %}active{% endif %}">Scans</a>
+                <a href="{% url 'playlists:playlist_list' %}" class="{% if request.resolver_match.namespace == 'playlists' %}active{% endif %}">Playlists</a>
+                <a href="{% url 'exports:export_list' %}" class="{% if request.resolver_match.namespace == 'exports' %}active{% endif %}">Exports</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="container">
+            {% if messages %}
+                <div class="messages">
+                    {% for message in messages %}
+                        <div class="message {{ message.tags }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; {% now "Y" %} MusicList for Soundiiz. Built with Django.</p>
+        </div>
+    </footer>
+</body>
+</html>

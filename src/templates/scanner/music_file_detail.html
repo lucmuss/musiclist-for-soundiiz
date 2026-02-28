@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ music_file }} - MusicList{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>🎵 Music File Details</h1>
+    <div class="header-actions">
+        <a href="{% url 'scanner:scan_detail' music_file.scan_session.pk %}" class="btn btn-secondary">← Back to Scan</a>
+    </div>
+</div>
+
+<div class="detail-card">
+    <h2>{{ music_file.title|default:music_file.filename }}</h2>
+
+    <div class="detail-grid">
+        <div class="detail-item">
+            <span class="detail-label">Artist</span>
+            <span class="detail-value">{{ music_file.artist|default:"Unknown Artist" }}</span>
+        </div>
+        <div class="detail-item">
+            <span class="detail-label">Album</span>
+            <span class="detail-value">{{ music_file.album|default:"Unknown Album" }}</span>
+        </div>
+        <div class="detail-item">
+            <span class="detail-label">Title</span>
+            <span class="detail-value">{{ music_file.title|default:"-" }}</span>
+        </div>
+        <div class="detail-item">
+            <span class="detail-label">Duration</span>
+            <span class="detail-value">{{ music_file.duration_formatted }}</span>
+        </div>
+        <div class="detail-item">
+            <span class="detail-label">Genre</span>
+            <span class="detail-value">{{ music_file.genre|default:"-" }}</span>
+        </div>
+        <div class="detail-item">
+            <span class="detail-label">Year</span>
+            <span class="detail-value">{{ music_file.year|default:"-" }}</span>
+        </div>
+        <div class="detail-item">
+            <span class="detail-label">ISRC</span>
+            <span class="detail-value">{{ music_file.isrc|default:"-" }}</span>
+        </div>
+        <div class="detail-item full-width">
+            <span class="detail-label">File Path</span>
+            <span class="detail-value code">{{ music_file.file_path }}</span>
+        </div>
+        <div class="detail-item full-width">
+            <span class="detail-label">Filename</span>
+            <span class="detail-value">{{ music_file.filename }}</span>
+        </div>
+    </div>
+</div>
+{% endblock %}

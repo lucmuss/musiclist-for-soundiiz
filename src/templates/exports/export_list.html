@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block title %}Exports - MusicList{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>📤 Exports</h1>
+</div>
+
+{% if exports %}
+    <div class="table-container">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Playlist</th>
+                    <th>Format</th>
+                    <th>Status</th>
+                    <th>Created</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for export in exports %}
+                <tr>
+                    <td>
+                        <a href="{% url 'playlists:playlist_detail' export.playlist.pk %}">
+                            {{ export.playlist.name }}
+                        </a>
+                    </td>
+                    <td>{{ export.get_format_type_display }}</td>
+                    <td>
+                        <span class="status-badge status-{{ export.status }}">
+                            {{ export.get_status_display }}
+                        </span>
+                    </td>
+                    <td>{{ export.created_at|date:"Y-m-d H:i" }}</td>
+                    <td>
+                        {% if export.status == 'completed' %}
+                            <a href="{% url 'exports:export_download' export.pk %}" class="btn btn-small btn-success">Download</a>
+                        {% endif %}
+                        <form method="post" action="{% url 'exports:export_delete' export.pk %}" class="inline-form" onsubmit="return confirm('Are you sure you want to delete this export?');">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-small btn-danger">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% else %}
+    <div class="empty-state">
+        <div class="empty-icon">📤</div>
+        <h3>No exports yet</h3>
+        <p>Export your playlists to various formats.</p>
+        <a href="{% url 'playlists:playlist_list' %}" class="btn btn-primary">View Playlists</a>
+    </div>
+{% endif %}
+{% endblock %}

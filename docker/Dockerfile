@@ -1,38 +1,56 @@
-# MusicList for Soundiiz - Docker Image
+# Python 3.11 base
 FROM python:3.11-slim
 
-ENV PYTHONDONTWRITEBYTECODE=1
-ENV PYTHONUNBUFFERED=1
-ENV UV_PROJECT_ENVIRONMENT=.venv
-ENV PATH="/app/.venv/bin:/root/.local/bin:/root/.cargo/bin:${PATH}"
+# Environment
+ENV PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1 \
+    UV_PROJECT_ENVIRONMENT=/app/.venv \
+    PATH="/app/.venv/bin:/root/.local/bin:$PATH"
 
-WORKDIR /app
-
-# Install system dependencies
-RUN apt-get update && apt-get install -y --no-install-recommends \
+# System dependencies
+RUN apt-get update && apt-get install -y \
     curl \
-    libmagic1 \
+    git \
+    postgresql-client \
+    libpq-dev \
+    gcc \
+    python3-dev \
+    libffi-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # Install uv
 RUN curl -LsSf https://astral.sh/uv/install.sh | sh
 
-# Copy project files
-COPY pyproject.toml uv.lock README.md LICENSE ./
-COPY src/ ./src/
-COPY scripts/ ./scripts/
-COPY docker/entrypoint.sh /app/entrypoint.sh
+# Copy dependency files first for better caching
+WORKDIR /app
+COPY pyproject.toml uv.lock /app/ 2>/dev/null || true
 
-# Set up environment and install dependencies
-RUN uv venv \
-    && uv sync --frozen --no-dev
+# Install dependencies
+RUN uv venv /app/.venv && \
+    uv pip install --system django django-environ psycopg2-binary dj-database-url \
+    django-htmx gunicorn whitenoise mutagen python-dotenv Pillow celery redis
 
-RUN chmod +x /app/entrypoint.sh /app/scripts/bootstrap.sh
+# Copy the application
+COPY . /app
 
-# Create mount points
-VOLUME ["/music", "/output"]
+# Install the local project
+RUN uv pip install -e /app || true
 
-ENV OUTPUT_DIR=/output
+# Working directory to Django app
+WORKDIR /app/src
 
-ENTRYPOINT ["/app/entrypoint.sh"]
-CMD ["--help"]
+# Collect static files
+RUN python manage.py collectstatic --noinput || true
+
+# Create media directory
+RUN mkdir -p /app/src/media
+
+# Expose port
+EXPOSE 8083
+
+# Entrypoint script
+COPY docker/entrypoint.sh /docker-entrypoint.sh
+RUN chmod +x /docker-entrypoint.sh
+
+ENTRYPOINT ["/docker-entrypoint.sh"]
+CMD ["sh", "-c", "gunicorn --bind 0.0.0.0:${PORT:-8083} --workers 4 --timeout 120 musiclist_project.wsgi:application"]

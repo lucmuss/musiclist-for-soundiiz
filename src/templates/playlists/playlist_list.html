@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block title %}Playlists - MusicList{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>📝 Playlists</h1>
+    <div class="header-actions">
+        <a href="{% url 'playlists:playlist_create' %}" class="btn btn-primary">
+            <span class="btn-icon">➕</span>
+            New Playlist
+        </a>
+    </div>
+</div>
+
+{% if page_obj.object_list %}
+    <div class="card-grid">
+        {% for playlist in page_obj.object_list %}
+        <div class="card">
+            <div class="card-header">
+                <h3><a href="{% url 'playlists:playlist_detail' playlist.pk %}">{{ playlist.name }}</a></h3>
+            </div>
+            <div class="card-body">
+                <p class="card-description">{{ playlist.description|default:"No description" }}</p>
+                <div class="card-stats">
+                    <span class="stat">
+                        <span class="stat-icon">🎵</span>
+                        {{ playlist.total_tracks }} tracks
+                    </span>
+                    <span class="stat">
+                        <span class="stat-icon">⏱️</span>
+                        {{ playlist.duration_formatted }}
+                    </span>
+                </div>
+            </div>
+            <div class="card-footer">
+                <a href="{% url 'playlists:playlist_detail' playlist.pk %}" class="btn btn-small">View</a>
+                <a href="{% url 'playlists:playlist_edit' playlist.pk %}" class="btn btn-small">Edit</a>
+                <a href="{% url 'exports:export_create' playlist.pk %}" class="btn btn-small btn-success">Export</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    {% if page_obj.has_other_pages %}
+        <div class="pagination">
+            {% if page_obj.has_previous %}
+                <a href="?page={{ page_obj.previous_page_number }}" class="btn btn-small">← Previous</a>
+            {% endif %}
+            <span class="page-info">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}" class="btn btn-small">Next →</a>
+            {% endif %}
+        </div>
+    {% endif %}
+{% else %}
+    <div class="empty-state">
+        <div class="empty-icon">📝</div>
+        <h3>No playlists yet</h3>
+        <p>Create your first playlist to organize your music.</p>
+        <a href="{% url 'playlists:playlist_create' %}" class="btn btn-primary">Create Playlist</a>
+    </div>
+{% endif %}
+{% endblock %}

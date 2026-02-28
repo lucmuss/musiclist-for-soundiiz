@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ scan.name|default:"Scan Details" }} - MusicList{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>📂 {{ scan.name|default:"Scan Session" }}</h1>
+    <div class="header-actions">
+        <a href="{% url 'scanner:scan_list' %}" class="btn btn-secondary">← Back to List</a>
+    </div>
+</div>
+
+<div class="detail-card">
+    <div class="detail-grid">
+        <div class="detail-item">
+            <span class="detail-label">Status</span>
+            <span class="status-badge status-{{ scan.status }}">{{ scan.get_status_display }}</span>
+        </div>
+        <div class="detail-item">
+            <span class="detail-label">Source Path</span>
+            <span class="detail-value" title="{{ scan.source_path }}">{{ scan.source_path }}</span>
+        </div>
+        <div class="detail-item">
+            <span class="detail-label">Files Found</span>
+            <span class="detail-value">{{ scan.total_files_found }}</span>
+        </div>
+        <div class="detail-item">
+            <span class="detail-label">Files Processed</span>
+            <span class="detail-value">{{ scan.total_files_processed }}</span>
+        </div>
+        <div class="detail-item">
+            <span class="detail-label">Files Failed</span>
+            <span class="detail-value">{{ scan.total_files_failed }}</span>
+        </div>
+        <div class="detail-item">
+            <span class="detail-label">Success Rate</span>
+            <span class="detail-value">{{ scan.success_rate|floatformat:1 }}%</span>
+        </div>
+        <div class="detail-item">
+            <span class="detail-label">Created</span>
+            <span class="detail-value">{{ scan.created_at|date:"Y-m-d H:i" }}</span>
+        </div>
+        {% if scan.completed_at %}
+        <div class="detail-item">
+            <span class="detail-label">Completed</span>
+            <span class="detail-value">{{ scan.completed_at|date:"Y-m-d H:i" }}</span>
+        </div>
+        {% endif %}
+    </div>
+    {% if scan.error_message %}
+    <div class="error-message">
+        <strong>Error:</strong> {{ scan.error_message }}
+    </div>
+    {% endif %}
+</div>
+
+<h2>Music Files ({{ scan.music_files.count }})</h2>
+
+{% if page_obj.object_list %}
+    <div class="table-container">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Artist</th>
+                    <th>Album</th>
+                    <th>Duration</th>
+                    <th>Genre</th>
+                    <th>Year</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for file in page_obj.object_list %}
+                <tr class="{% if not file.processed %}row-error{% endif %}">
+                    <td>
+                        <a href="{% url 'scanner:music_file_detail' file.pk %}">
+                            {{ file.title|default:file.filename }}
+                        </a>
+                    </td>
+                    <td>{{ file.artist|default:"-" }}</td>
+                    <td>{{ file.album|default:"-" }}</td>
+                    <td>{{ file.duration_formatted }}</td>
+                    <td>{{ file.genre|default:"-" }}</td>
+                    <td>{{ file.year|default:"-" }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {% if page_obj.has_other_pages %}
+        <div class="pagination">
+            {% if page_obj.has_previous %}
+                <a href="?page={{ page_obj.previous_page_number }}" class="btn btn-small">← Previous</a>
+            {% endif %}
+            <span class="page-info">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}" class="btn btn-small">Next →</a>
+            {% endif %}
+        </div>
+    {% endif %}
+{% else %}
+    <div class="empty-state">
+        <div class="empty-icon">🎵</div>
+        <h3>No music files found</h3>
+        <p>This scan session didn't find any music files.</p>
+    </div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}Scan Music - MusicList{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>📂 Scan Music Directory</h1>
+    <p>Scan a local directory to extract music file metadata</p>
+</div>
+
+<div class="form-container">
+    <form method="post" class="scan-form">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label for="directory_path">Directory Path *</label>
+            <input type="text" id="directory_path" name="directory_path" required
+                   placeholder="/path/to/your/music"
+                   class="form-control">
+            <small class="form-help">Full path to the directory containing your music files</small>
+        </div>
+
+        <div class="form-group">
+            <label for="session_name">Session Name (optional)</label>
+            <input type="text" id="session_name" name="session_name"
+                   placeholder="My Music Collection"
+                   class="form-control">
+        </div>
+
+        <div class="form-group checkbox-group">
+            <label class="checkbox-label">
+                <input type="checkbox" name="recursive" checked>
+                <span>Scan subdirectories recursively</span>
+            </label>
+        </div>
+
+        <div class="form-group">
+            <p class="form-note">
+                <strong>Supported formats:</strong> MP3, FLAC, M4A, OGG, WAV, WMA, AAC, AU
+            </p>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary btn-large">
+                <span class="btn-icon">🔍</span>
+                Start Scan
+            </button>
+            <a href="{% url 'scanner:scan_list' %}" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

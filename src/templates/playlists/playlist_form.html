@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}{% if playlist %}Edit {{ playlist.name }}{% else %}Create Playlist{% endif %} - MusicList{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>{% if playlist %}✏️ Edit Playlist{% else %}➕ Create Playlist{% endif %}</h1>
+</div>
+
+<div class="form-container">
+    <form method="post" class="playlist-form">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label for="name">Playlist Name *</label>
+            <input type="text" id="name" name="name" required
+                   value="{{ playlist.name|default:'' }}"
+                   placeholder="My Awesome Playlist"
+                   class="form-control">
+        </div>
+
+        <div class="form-group">
+            <label for="description">Description (optional)</label>
+            <textarea id="description" name="description" rows="4"
+                      placeholder="Describe your playlist..."
+                      class="form-control">{{ playlist.description|default:'' }}</textarea>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">
+                {% if playlist %}Save Changes{% else %}Create Playlist{% endif %}
+            </button>
+            <a href="{% if playlist %}{% url 'playlists:playlist_detail' playlist.pk %}{% else %}{% url 'playlists:playlist_list' %}{% endif %}" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}
