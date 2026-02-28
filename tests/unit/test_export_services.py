@@ -1,9 +1,10 @@
 """Unit tests for export services."""
 
-import pytest
 import json
 import os
 from pathlib import Path
+
+import pytest
 
 from exports.services import (
     CSVExporter,
@@ -95,7 +96,9 @@ class TestM3UExporter:
     def test_export_extended_format(self, tmp_path):
         """Test M3U extended format."""
         exporter = M3UExporter(extended=True)
-        tracks = [{"title": "Song", "artist": "Artist", "duration": 180, "file_path": "/music/song.mp3"}]
+        tracks = [
+            {"title": "Song", "artist": "Artist", "duration": 180, "file_path": "/music/song.mp3"}
+        ]
         output_path = tmp_path / "test.m3u"
         exporter.export(tracks, str(output_path))
 

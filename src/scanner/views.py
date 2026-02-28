@@ -1,12 +1,13 @@
-from django.shortcuts import render, redirect, get_object_or_404
+import os
+
 from django.contrib import messages
 from django.core.paginator import Paginator
 from django.http import JsonResponse
-from django.views.decorators.http import require_POST
+from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
-import os
+from django.views.decorators.http import require_POST
 
-from .models import ScanSession, MusicFile
+from .models import MusicFile, ScanSession
 from .services import MusicFileExtractor
 
 
@@ -26,10 +27,14 @@ def scan_detail(request, pk):
     paginator = Paginator(music_files, 25)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
-    return render(request, "scanner/scan_detail.html", {
-        "scan": scan,
-        "page_obj": page_obj,
-    })
+    return render(
+        request,
+        "scanner/scan_detail.html",
+        {
+            "scan": scan,
+            "page_obj": page_obj,
+        },
+    )
 
 
 def scan_upload(request):
@@ -99,7 +104,7 @@ def scan_upload(request):
             messages.success(
                 request,
                 f"Scan completed! Found {scan_session.total_files_found} files, "
-                f"processed {scan_session.total_files_processed} successfully."
+                f"processed {scan_session.total_files_processed} successfully.",
             )
             return redirect("scanner:scan_detail", pk=scan_session.pk)
 

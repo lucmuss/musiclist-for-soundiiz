@@ -23,10 +23,7 @@ DEBUG = os.getenv("DJANGO_DEBUG", "False").lower() in ("true", "1", "yes")
 
 # Environment
 raw_django_env = (os.getenv("DJANGO_ENV", "") or "").strip().lower()
-if raw_django_env:
-    DJANGO_ENV = raw_django_env
-else:
-    DJANGO_ENV = "production" if not DEBUG else "development"
+DJANGO_ENV = raw_django_env or ("production" if not DEBUG else "development")
 
 IS_PRODUCTION = DJANGO_ENV == "production"
 if IS_PRODUCTION and (not SECRET_KEY or SECRET_KEY == DEFAULT_DEV_SECRET_KEY):
@@ -103,10 +100,7 @@ WSGI_APPLICATION = "musiclist_project.wsgi.application"
 DATABASES: dict[str, dict[str, Any]]
 
 # Prefer explicit DB_* variables when present
-if all(
-    os.getenv(var)
-    for var in ["DB_NAME", "DB_USER", "DB_HOST", "DB_PORT"]
-):
+if all(os.getenv(var) for var in ["DB_NAME", "DB_USER", "DB_HOST", "DB_PORT"]):
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.postgresql",

@@ -1,4 +1,5 @@
 from django.db import models
+
 from core.models import BaseModel
 from scanner.models import MusicFile
 
@@ -15,12 +16,12 @@ class Playlist(BaseModel):
         verbose_name_plural = "Playlists"
 
     def __str__(self) -> str:
-        return self.name
+        return str(self.name)
 
     @property
     def total_tracks(self) -> int:
         """Return total number of tracks in playlist."""
-        return self.items.count()
+        return int(self.items.count())
 
     @property
     def total_duration(self) -> int:

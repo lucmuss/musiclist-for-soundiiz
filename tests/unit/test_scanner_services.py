@@ -1,8 +1,9 @@
 """Unit tests for scanner services."""
 
-import pytest
 from pathlib import Path
 from unittest.mock import Mock, patch
+
+import pytest
 
 from scanner.services import MusicFileExtractor
 
@@ -52,12 +53,11 @@ class TestMusicFileExtractor:
 
         extractor = MusicFileExtractor()
         # Mock the actual path behavior
-        with patch.object(Path, "exists", return_value=True):
-            with patch.object(Path, "is_dir", return_value=True):
-                with patch.object(Path, "is_file", return_value=True):
-                    with patch.object(Path, "suffix", ".mp3"):
-                        files = extractor.find_music_files("/music")
-                        assert len(files) > 0 or len(files) == 0  # Depends on mock behavior
+        with patch.object(Path, "exists", return_value=True), patch.object(
+            Path, "is_dir", return_value=True
+        ), patch.object(Path, "is_file", return_value=True), patch.object(Path, "suffix", ".mp3"):
+            files = extractor.find_music_files("/music")
+            assert len(files) > 0 or len(files) == 0  # Depends on mock behavior
 
     def test_parse_filename_with_dash(self):
         """Test parsing filename with dash separator."""

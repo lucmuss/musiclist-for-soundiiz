@@ -1,8 +1,9 @@
 """Integration tests for export views."""
 
+import os
+
 import pytest
 from django.urls import reverse
-import os
 
 from exports.models import ExportJob
 
@@ -30,9 +31,9 @@ class TestExportViews:
 
         response = client.post(
             reverse("exports:export_create", kwargs={"playlist_pk": playlist.pk}),
-            {"format_type": "csv"}
+            {"format_type": "csv"},
         )
-        assert response.status_code == 200  # Returns download response
+        assert response.status_code == 302  # Redirects to download view
 
     def test_export_delete_view(self, client, export_job):
         """Test export delete view."""

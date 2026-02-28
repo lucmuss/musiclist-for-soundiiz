@@ -1,5 +1,6 @@
-from django.db import models
 from django.core.validators import MinValueValidator
+from django.db import models
+
 from core.models import BaseModel
 
 
@@ -13,7 +14,9 @@ class ScanSession(BaseModel):
         ("failed", "Failed"),
     ]
 
-    name = models.CharField(max_length=255, blank=True, help_text="Optional name for this scan session")
+    name = models.CharField(
+        max_length=255, blank=True, help_text="Optional name for this scan session"
+    )
     source_path = models.CharField(max_length=1024, help_text="Path to the scanned directory")
     recursive = models.BooleanField(default=True, help_text="Whether subdirectories were scanned")
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="pending")
@@ -39,7 +42,9 @@ class ScanSession(BaseModel):
         """Calculate success rate as percentage."""
         if self.total_files_found == 0:
             return 0.0
-        return (self.total_files_processed / self.total_files_found) * 100
+        processed = float(self.total_files_processed)
+        found = float(self.total_files_found)
+        return (processed / found) * 100
 
 
 class MusicFile(BaseModel):
@@ -82,7 +87,7 @@ class MusicFile(BaseModel):
     def __str__(self) -> str:
         if self.title and self.artist:
             return f"{self.artist} - {self.title}"
-        return self.filename
+        return str(self.filename)
 
     @property
     def duration_formatted(self) -> str:

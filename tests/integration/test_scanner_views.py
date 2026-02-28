@@ -3,7 +3,7 @@
 import pytest
 from django.urls import reverse
 
-from scanner.models import ScanSession, MusicFile
+from scanner.models import MusicFile, ScanSession
 
 
 @pytest.mark.integration
@@ -30,10 +30,13 @@ class TestScannerViews:
 
     def test_scan_upload_view_post_invalid_path(self, client):
         """Test scan upload with invalid path."""
-        response = client.post(reverse("scanner:scan_upload"), {
-            "directory_path": "/nonexistent/path",
-            "session_name": "Test",
-        })
+        response = client.post(
+            reverse("scanner:scan_upload"),
+            {
+                "directory_path": "/nonexistent/path",
+                "session_name": "Test",
+            },
+        )
         assert response.status_code == 200
         # Should show error message
         content = response.content.decode()

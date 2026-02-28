@@ -78,7 +78,9 @@ class JSONExporter(BaseExporter):
         output_path_obj.parent.mkdir(parents=True, exist_ok=True)
 
         export_data = {
-            "playlist_name": tracks[0].get("playlist_name", "Unknown Playlist") if tracks else "Unknown Playlist",
+            "playlist_name": tracks[0].get("playlist_name", "Unknown Playlist")
+            if tracks
+            else "Unknown Playlist",
             "total_tracks": len(tracks),
             "tracks": tracks,
         }
@@ -165,8 +167,7 @@ def get_exporter(format_type: str, **kwargs) -> BaseExporter:
 
     if format_type not in exporters:
         raise ValueError(
-            f"Unsupported format: {format_type}. "
-            f"Supported formats: {', '.join(exporters.keys())}"
+            f"Unsupported format: {format_type}. Supported formats: {', '.join(exporters.keys())}"
         )
 
     return exporters[format_type](**kwargs)
@@ -188,18 +189,20 @@ def export_playlist(playlist, format_type: str, output_dir: str) -> str:
     tracks = []
     for item in playlist.items.select_related("music_file").all():
         music_file = item.music_file
-        tracks.append({
-            "title": music_file.title,
-            "artist": music_file.artist,
-            "album": music_file.album,
-            "isrc": music_file.isrc,
-            "genre": music_file.genre,
-            "year": music_file.year,
-            "duration": music_file.duration,
-            "file_path": music_file.file_path,
-            "filename": music_file.filename,
-            "playlist_name": playlist.name,
-        })
+        tracks.append(
+            {
+                "title": music_file.title,
+                "artist": music_file.artist,
+                "album": music_file.album,
+                "isrc": music_file.isrc,
+                "genre": music_file.genre,
+                "year": music_file.year,
+                "duration": music_file.duration,
+                "file_path": music_file.file_path,
+                "filename": music_file.filename,
+                "playlist_name": playlist.name,
+            }
+        )
 
     # Generate output filename
     safe_name = "".join(c for c in playlist.name if c.isalnum() or c in " -_").strip()

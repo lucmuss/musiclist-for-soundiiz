@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import ScanSession, MusicFile
+
+from .models import MusicFile, ScanSession
 
 
 class MusicFileInline(admin.TabularInline):
@@ -38,9 +39,9 @@ class ScanSessionAdmin(admin.ModelAdmin):
     inlines = [MusicFileInline]
     date_hierarchy = "created_at"
 
+    @admin.display(description="Success Rate")
     def success_rate_display(self, obj: ScanSession) -> str:
         return f"{obj.success_rate:.1f}%"
-    success_rate_display.short_description = "Success Rate"
 
 
 @admin.register(MusicFile)

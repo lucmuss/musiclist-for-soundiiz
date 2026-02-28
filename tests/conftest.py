@@ -2,9 +2,10 @@
 
 import pytest
 from django.test import Client
-from scanner.models import ScanSession, MusicFile
-from playlists.models import Playlist, PlaylistItem
+
 from exports.models import ExportJob
+from playlists.models import Playlist, PlaylistItem
+from scanner.models import MusicFile, ScanSession
 
 
 @pytest.fixture

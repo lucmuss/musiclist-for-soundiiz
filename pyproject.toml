@@ -117,6 +117,8 @@ indent-style = "space"
 skip-magic-trailing-comma = false
 
 [tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "musiclist_project.settings_test"
+pythonpath = ["src"]
 testpaths = ["tests"]
 python_files = "test_*.py"
 python_classes = "Test*"

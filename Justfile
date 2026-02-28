@@ -1,12 +1,13 @@
 set shell := ["bash", "-c"]
+uv_bin := if command -v uv >/dev/null 2>&1; then command -v uv; elif [ -x "$HOME/.openclaw/bin/uv" ]; then echo "$HOME/.openclaw/bin/uv"; else echo uv; fi
 
 default:
     @just --list
 
 # Initializes the project (uv-based)
 setup:
-    uv venv
-    uv sync --extra dev
+    {{uv_bin}} venv
+    {{uv_bin}} sync --extra dev
     cp -n .env.example .env || true
 
 # Loads .env (if present) and prints bootstrap debug info when enabled
@@ -23,26 +24,26 @@ dev:
 
 # Formats code (Ruff)
 format:
-    uv run ruff format src tests scripts
-    uv run ruff check --fix src tests scripts
+    {{uv_bin}} run ruff format src tests scripts
+    {{uv_bin}} run ruff check --fix src tests scripts
 
 # Checks code quality (read-only)
 lint:
-    uv run ruff check src tests scripts
-    uv run ruff format --check src tests scripts
+    {{uv_bin}} run ruff check src tests scripts
+    {{uv_bin}} run ruff format --check src tests scripts
 
 # Type-checking
 typecheck:
-    uv run mypy src
+    {{uv_bin}} run mypy src
 
 # Runs tests
 test:
-    PYTHONPATH=src uv run pytest
+    PYTHONPATH=src {{uv_bin}} run pytest
 
 # Builds distribution packages
 build:
-    uv run --with build python -m build
-    uv run --with twine twine check dist/*
+    {{uv_bin}} run --with build python -m build
+    {{uv_bin}} run --with twine twine check dist/*
 
 # Full quality check (CI simulation)
 check: lint typecheck test
@@ -54,44 +55,44 @@ ci: lint typecheck test build
 
 # Setup web environment (installs Django dependencies)
 setup-web:
-    uv sync --extra dev --extra web
+    {{uv_bin}} sync --extra dev --extra web
     cp -n .env.example .env || true
     @echo "Web environment ready. Run 'just web-migrate' to initialize database."
 
 # Run Django migrations
 web-migrate:
-    uv run python src/manage.py migrate
+    {{uv_bin}} run python src/manage.py migrate
 
 # Create superuser for web interface
 web-createsuperuser:
-    uv run python src/manage.py createsuperuser
+    {{uv_bin}} run python src/manage.py createsuperuser
 
 # Start web development server
 web-dev:
-    uv run python src/manage.py runserver 0.0.0.0:8000
+    {{uv_bin}} run python src/manage.py runserver 0.0.0.0:8000 --noreload
 
 # Start web server via entrypoint (alternative)
 web-start:
-    uv run musiclist-for-soundiiz-web
+    {{uv_bin}} run musiclist-for-soundiiz-web
 
 # Collect static files for production
 web-collectstatic:
-    uv run python src/manage.py collectstatic --noinput
+    {{uv_bin}} run python src/manage.py collectstatic --noinput
 
 # Run web tests
 web-test:
-    PYTHONPATH=src uv run pytest tests/ -v
+    PYTHONPATH=src {{uv_bin}} run pytest tests/ -v
 
 # Run web tests with coverage
 web-test-cov:
-    PYTHONPATH=src uv run pytest tests/ --cov=src --cov-report=html --cov-report=term
+    PYTHONPATH=src {{uv_bin}} run pytest tests/ --cov=src --cov-report=html --cov-report=term
 
 # Full web setup (setup + migrate + test)
 web-setup: setup-web web-migrate
 
 # Start production server
 web-production:
-    uv run musiclist-for-soundiiz-web --production --port 8080
+    {{uv_bin}} run musiclist-for-soundiiz-web --production --port 8080
 
 # === DOCKER COMMANDS ===
 

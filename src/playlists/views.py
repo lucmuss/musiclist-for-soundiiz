@@ -1,11 +1,12 @@
-from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.core.paginator import Paginator
-from django.views.decorators.http import require_POST
 from django.db.models import Q
+from django.shortcuts import get_object_or_404, redirect, render
+from django.views.decorators.http import require_POST
+
+from scanner.models import MusicFile
 
 from .models import Playlist, PlaylistItem
-from scanner.models import MusicFile
 
 
 def playlist_list(request):
@@ -24,10 +25,14 @@ def playlist_detail(request, pk):
     paginator = Paginator(items, 25)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
-    return render(request, "playlists/playlist_detail.html", {
-        "playlist": playlist,
-        "page_obj": page_obj,
-    })
+    return render(
+        request,
+        "playlists/playlist_detail.html",
+        {
+            "playlist": playlist,
+            "page_obj": page_obj,
+        },
+    )
 
 
 def playlist_create(request):
@@ -113,9 +118,9 @@ def playlist_add_tracks(request, pk):
 
     if search_query:
         music_files = music_files.filter(
-            Q(title__icontains=search_query) |
-            Q(artist__icontains=search_query) |
-            Q(album__icontains=search_query)
+            Q(title__icontains=search_query)
+            | Q(artist__icontains=search_query)
+            | Q(album__icontains=search_query)
         )
 
     if scan_session:
@@ -129,11 +134,15 @@ def playlist_add_tracks(request, pk):
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
 
-    return render(request, "playlists/playlist_add_tracks.html", {
-        "playlist": playlist,
-        "page_obj": page_obj,
-        "search_query": search_query,
-    })
+    return render(
+        request,
+        "playlists/playlist_add_tracks.html",
+        {
+            "playlist": playlist,
+            "page_obj": page_obj,
+            "search_query": search_query,
+        },
+    )
 
 
 @require_POST

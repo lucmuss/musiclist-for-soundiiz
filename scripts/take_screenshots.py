@@ -3,9 +3,9 @@
 Simple screenshot script for Django app using selenium
 """
 
-import time
 import subprocess
 import sys
+import time
 from pathlib import Path
 
 # Try to use selenium, fallback to manual instructions
@@ -13,6 +13,7 @@ try:
     from selenium import webdriver
     from selenium.webdriver.chrome.options import Options
     from selenium.webdriver.chrome.service import Service
+
     SELENIUM_AVAILABLE = True
 except ImportError:
     SELENIUM_AVAILABLE = False
@@ -21,31 +22,35 @@ except ImportError:
     try:
         from selenium import webdriver
         from selenium.webdriver.chrome.options import Options
+
         SELENIUM_AVAILABLE = True
-    except:
+    except Exception:
         print("Could not install selenium. Please install manually.")
         sys.exit(1)
 
-OUTPUT_DIR = Path("/home/node/.openclaw/workspace/projects/musiclist-for-soundiiz/output/gui-screenshots")
+OUTPUT_DIR = Path(
+    "/home/node/.openclaw/workspace/projects/musiclist-for-soundiiz/output/gui-screenshots"
+)
 BASE_URL = "http://localhost:8000"
+
 
 def take_screenshots():
     """Take screenshots of all main pages"""
-    
+
     # Setup Chrome options for headless mode
     chrome_options = Options()
     chrome_options.add_argument("--headless")
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--disable-dev-shm-usage")
     chrome_options.add_argument("--window-size=1920,1080")
-    
+
     try:
         driver = webdriver.Chrome(options=chrome_options)
     except Exception as e:
         print(f"Could not start Chrome: {e}")
         print("Make sure Chrome/Chromium is installed")
         return False
-    
+
     screenshots = [
         ("00-landing-page.png", "/", "Landing Page"),
         ("01-login.png", "/accounts/login/", "Login Page"),
@@ -55,7 +60,7 @@ def take_screenshots():
         ("05-playlists.png", "/playlists/", "Playlists"),
         ("06-exports.png", "/exports/", "Exports"),
     ]
-    
+
     taken = []
     for filename, path, description in screenshots:
         try:
@@ -63,14 +68,14 @@ def take_screenshots():
             print(f"Taking screenshot of {description}...")
             driver.get(url)
             time.sleep(2)  # Wait for page to load
-            
+
             filepath = OUTPUT_DIR / filename
             driver.save_screenshot(str(filepath))
             taken.append(filename)
             print(f"  ✓ Saved: {filepath}")
         except Exception as e:
             print(f"  ✗ Error taking {description}: {e}")
-    
+
     # Mobile view
     try:
         print("Taking mobile view screenshot...")
@@ -83,33 +88,35 @@ def take_screenshots():
         print(f"  ✓ Saved: {filepath}")
     except Exception as e:
         print(f"  ✗ Error taking mobile view: {e}")
-    
+
     driver.quit()
     return taken
+
 
 if __name__ == "__main__":
     print("=" * 60)
     print("Django App Screenshot Generator")
     print("=" * 60)
     print()
-    
+
     # Ensure output directory exists
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
-    
+
     # Check if server is running
     import urllib.request
+
     try:
         urllib.request.urlopen(BASE_URL, timeout=5)
         print(f"✓ Server detected at {BASE_URL}")
-    except:
+    except Exception:
         print(f"✗ Server not running at {BASE_URL}")
         print("Please start the server first with: just web-dev")
         sys.exit(1)
-    
+
     print()
     print("Taking screenshots...")
     taken = take_screenshots()
-    
+
     print()
     print("=" * 60)
     if taken:

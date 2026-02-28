@@ -1,9 +1,10 @@
 """Unit tests for scanner models."""
 
-import pytest
 from datetime import datetime, timezone
 
-from scanner.models import ScanSession, MusicFile
+import pytest
+
+from scanner.models import MusicFile, ScanSession
 
 
 @pytest.mark.unit

@@ -31,19 +31,25 @@ class TestPlaylistViews:
 
     def test_playlist_create_view_post(self, client):
         """Test playlist create view POST."""
-        response = client.post(reverse("playlists:playlist_create"), {
-            "name": "New Playlist",
-            "description": "Test description",
-        })
+        response = client.post(
+            reverse("playlists:playlist_create"),
+            {
+                "name": "New Playlist",
+                "description": "Test description",
+            },
+        )
         assert response.status_code == 302  # Redirect
         assert Playlist.objects.filter(name="New Playlist").exists()
 
     def test_playlist_edit_view(self, client, playlist):
         """Test playlist edit view."""
-        response = client.post(reverse("playlists:playlist_edit", kwargs={"pk": playlist.pk}), {
-            "name": "Updated Name",
-            "description": "Updated description",
-        })
+        response = client.post(
+            reverse("playlists:playlist_edit", kwargs={"pk": playlist.pk}),
+            {
+                "name": "Updated Name",
+                "description": "Updated description",
+            },
+        )
         assert response.status_code == 302
         playlist.refresh_from_db()
         assert playlist.name == "Updated Name"
@@ -64,16 +70,18 @@ class TestPlaylistViews:
         """Test adding tracks to playlist."""
         response = client.post(
             reverse("playlists:playlist_add_tracks", kwargs={"pk": playlist.pk}),
-            {"music_files": [str(music_file.pk)]}
+            {"music_files": [str(music_file.pk)]},
         )
         assert response.status_code == 302
         assert playlist.items.filter(music_file=music_file).exists()
 
     def test_playlist_remove_track(self, client, playlist, playlist_item):
         """Test removing track from playlist."""
-        response = client.post(reverse(
-            "playlists:playlist_remove_track",
-            kwargs={"playlist_pk": playlist.pk, "item_pk": playlist_item.pk}
-        ))
+        response = client.post(
+            reverse(
+                "playlists:playlist_remove_track",
+                kwargs={"playlist_pk": playlist.pk, "item_pk": playlist_item.pk},
+            )
+        )
         assert response.status_code == 302
         assert not playlist.items.filter(pk=playlist_item.pk).exists()

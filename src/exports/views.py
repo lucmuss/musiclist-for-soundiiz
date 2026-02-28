@@ -1,12 +1,16 @@
-from django.shortcuts import render, redirect, get_object_or_404
+import mimetypes
+import os
+from contextlib import suppress
+from pathlib import Path
+
+from django.conf import settings
 from django.contrib import messages
 from django.http import FileResponse, Http404
-from django.conf import settings
+from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
-import os
-import mimetypes
 
 from playlists.models import Playlist
+
 from .models import ExportJob
 from .services import export_playlist
 
@@ -52,10 +56,7 @@ def export_create(request, playlist_pk):
             export_job.completed_at = timezone.now()
             export_job.save()
 
-            messages.success(
-                request,
-                f"Playlist exported successfully as {format_type.upper()}."
-            )
+            messages.success(request, f"Playlist exported successfully as {format_type.upper()}.")
             return redirect("exports:export_download", pk=export_job.pk)
 
         except Exception as e:
@@ -88,8 +89,9 @@ def export_download(request, pk):
         content_type = "application/octet-stream"
 
     # Create response with appropriate filename
+    file_handle = Path(export_job.file_path).open("rb")  # noqa: SIM115
     response = FileResponse(
-        open(export_job.file_path, "rb"),
+        file_handle,
         content_type=content_type,
         as_attachment=True,
         filename=export_job.filename,
@@ -104,10 +106,8 @@ def export_delete(request, pk):
 
     # Delete the file if it exists
     if export_job.file_path and os.path.exists(export_job.file_path):
-        try:
+        with suppress(OSError):
             os.remove(export_job.file_path)
-        except OSError:
-            pass
 
     playlist_pk = export_job.playlist.pk
     export_job.delete()
