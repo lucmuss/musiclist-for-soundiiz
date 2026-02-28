@@ -94,6 +94,6 @@ class MusicFile(BaseModel):
         return f"{minutes}:{seconds:02d}"
 
     @property
-    has_metadata(self) -> bool:
+    def has_metadata(self) -> bool:
         """Check if file has meaningful metadata."""
         return bool(self.title or self.artist or self.album)
